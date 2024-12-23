@@ -1,0 +1,27 @@
+### Thông tin chung cho chương trình
+1. Class: Là folder chứa các lớp (thực thể) của chương trình
+     + Tất cả chức năng của chương trình thì cần làm việc trong file
+       `chuong_trinh_quan_ly.py`
+2. Database: Là folder chứa cơ sở dữ liệu của chương trình
+     + Database được lưu tại file (.csv hoặc .xsl)
+3. Config: Là folder chứa cài đặt của chương trình
+     + Khi làm việc thì phải khai báo thư viện trong `library.py`
+     + Khi có hàm dùng chung phải cài đặt tại `setup.py`
+       Tránh trường hợp có nhiều hơn 1 hàm có chức năng giống nhau trong chương trình
+     + Nếu hàm cần có thư viện mới dùng được thì ngoài khai báo ở trên thì
+       còn cần import tại `setup.py`
+4. Gfi: Là folder chứa thông tin của chương trình
+     + Cần đọc kỹ trước và trong khi làm
+5. main.py: File chạy chương trình
+     + Tại đây chỉ gọi chức năng không tạo chức năng
+
+### Go takou wo oinorishimasu :333
+           ／＞　 フ
+           | 　_　_| 
+        ／` ミ＿vノ 
+       /　　　　 |
+      /　 ヽ　　 ﾉ
+     │　　|　|　| 
+／￣|　　 |　|　| 
+(￣ヽ＿_ヽ_)__)
+＼二)

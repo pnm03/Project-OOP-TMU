@@ -1,0 +1,66 @@
+# Đọc file "LIBRARY.txt"
+# Đọc file "PRODUCT.txt" trước khi gửi bài
+
+# RULES (Quy tắc khi viết code)
+
+1. **Thông tin**: 
+   - Để ở `Protected` nếu có kế thừa.
+   - Để ở `Private` nếu không có kế thừa.
+
+2. **Hàm chức năng (Phương thức)**: 
+   - Nên để ở vùng `public`.
+   - Nếu hàm lấy thông tin thì phải có từ "set".
+   - Nếu hàm xuất thông tin thì phải có từ "get" (Lưu ý: chỉ áp dụng khi lấy và xuất thông tin từ đối tượng, không phải cứ xuất là "get").
+
+3. **Tên biến**: 
+   - Ngắn gọn, có ý nghĩa.
+   - Viết thường chữ cái đầu và viết hoa các chữ cái kế tiếp.
+   - Kèm chữ cái đầu in thường và có gạch chân biểu thị loại dữ liệu lưu trữ.
+   - Nếu là mảng, thì thêm "arr".
+     - Ví dụ:
+       - Họ tên -> `str_hoTen`
+       - Địa điểm chuyến đi (mảng) -> `arr_diaDiemChuyenDi`
+
+4. **Tên hàm**: 
+   - Giống tên biến, nhưng kiểu dữ liệu trả về viết hoa.
+     - Ví dụ:
+       - Xuất -> `SRT_xuat()`
+       - Thông tin (mảng) -> `ARR_thongTin()`
+
+5. **Tên class**: 
+   - Viết hoa mỗi chữ cái đầu.
+     - Ví dụ: Khách hàng -> `KhachHang`
+
+6. **Biến toàn cục**: 
+   - Viết hoa toàn bộ, nối giữa các từ bằng gạch chân.
+     - Ví dụ: Giá trị lớn nhất -> `MAX_VALUE = 1e9`
+
+7. **Các toán hạng, ký tự giữa các toán tử**: 
+   - Có khoảng trống.
+     - Ví dụ: Phép cộng -> `(a + b)`
+
+8. **Cách dòng**: 
+   - Dưới mỗi lần chuyển sang block khác thì phải kèm cách dòng.
+     - Ví dụ:
+       ```
+       Ham1()
+
+       // Cách dòng
+       Ham2()
+       ```
+
+9. **Ghi chú (Comment)**: 
+   - Tất cả phải có ghi chú chung để người khác dễ đọc.
+     - Cụ thể:
+       - Ghi chú những thứ liên quan đến mô tả, công thức, đầu vào, đầu ra,…
+
+10. **Đặt biến trong vòng lặp**: 
+    - Theo thứ tự sau: `i`, `j`, `k`, `m`, `n`.
+
+---
+
+## CHẠY CODE VÀ GỬI CODE
+
+- Code phải đảm bảo chạy được trên bài kiểm thử của chính mình trước khi gửi lên nhóm chung.
+- Gửi code lên nhóm chung (dự kiến sẽ có sheet).
+- Nếu có code mới của bạn khác, hãy tự tải về và chạy thử lại trước khi tiếp tục làm việc.

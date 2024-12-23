@@ -1,0 +1,18 @@
+# CONFIG là file cài đặt cho chương trình chính
+* Mục đích: Là để cái main nó gọn hơn
+* library.py: 
+     + Đây là file chứa các thư viện.
+     + Nó để nếu người dùng chưa có thư viện thì có thể chọn tải
+     mà không cần dừng chương trình để tự import. Kiểu thế
+-> Khi thư viện khai báo tại đây. Nếu máy người dùng chưa có thì sẽ được cài.
+* setup.py:
+     + Đây là file khởi động, tải thư viện
+-> Cài đặt các thư viện tại library.py
+
+* function.py:
+     + Đây là nơi khai báo các thư viện 
+     + Hay nếu dùng hàm nào thì From.. import tại đây thì mới chạy đc
+     + Là nơi tạo các hàm dùng chung
+-> Tạo các hàm phục vụ khác như hàm dọn dẹp console, hàm in ra thông báo chung
+   hàm abc nào đó phục vụ chung cho chương trình...
+-> Khai báo các thư viện để chạy các hàm đó.

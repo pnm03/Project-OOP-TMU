@@ -1,0 +1,16 @@
+// Trước khi gửi bài
++ Đảm bảo chạy thành công được chương trình
++ Đảm bảo không có các trường hợp lặp vô tận (nếu có)
++ Đảm bảo trải nghiệm cho người dùng, và giao diện hiển thị phải tốt
++ Đảm bảo đã điền thư viện vào "LIBRARY" (nếu có)
++ Đảm bảo quy tắc đặt tên biến, tên hàm
++ Đảm bảo đã comment nhữg chỗ cần thiết
+
+// Gửi bài
++ Gửi bài trực tiếp vào zalo
++ Chỉ gửi các file mình làm không gửi file chương trinh trình tổng
++ Nếu có sự nhập nhằng (ví dụ làm tại file người khác cũng làm thì phải comment chỗ mình làm)
++ Cú pháp comment: Số - Thời gian - Mô tả ngắn
+  Ví dụ: [1] - 7h 23/12/2024 - Chỉnh sửa phần thêm khách hàng
++ Cú pháp gửi bài trên zalo: Số - Làm mới/chỉnh sửa - Mô tả ngắn gọn
+  Ví dụ: [1] - Làm mới - Hoàn thành file "abc.py"

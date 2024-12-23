@@ -1,0 +1,13 @@
+// Khi code nếu dùng bất kỳ thư viện nào không có sẵn thì phải điền vào đây
+// Kèm thêm cả các install, import, cách dùng thì càng tốt
+// Viết trong các khối ` ...``
+
+// Sau khi làm xong thì vào "Config" để điền tiếp
+`
+Ví dụ:
+1. Thư viện "abc"
+- Install: ...
+- Import: ...
+- Cách dùng trong bài: ...
+``
+
