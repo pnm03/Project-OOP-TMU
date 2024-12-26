@@ -15,3 +15,7 @@ from Class.chuon_trinh_quan_ly import *
 STR_nhap_trong_khung("Nhập họ tên", "Nhập số")
 
 in_thong_tin("Menu", "1. Chuc nang a\n2. Chuc nang b\n3. Chuc nang c");
+
+quan_ly = QuanLyKhachHang()
+quan_ly1 = QuanLyKhachHang()
+quan_ly.doc_du_lieu_tu_file()
