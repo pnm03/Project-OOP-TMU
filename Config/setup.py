@@ -10,7 +10,7 @@ def install_libraries(libraries):
      for library in libraries:
           try:
                __import__(library)
-               print(f"{library} đã được cài đặt.")
+               print(f"{library} đã được tải thành công.")
           except ImportError:
                print(f"{library} Thư viện này chưa được cài đặt. Vui lòng xem thêm tại Gfi/LIBRARY")
                user_input = input(f"Bạn có muốn cài đặt {library} không? (y/n): ")
