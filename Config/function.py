@@ -10,6 +10,10 @@ from rich.text import Text
 
 # Tạo hàm dùng chung thì comment tại main để người khác dùng với
 
+# Hàm tạo độ ngưng
+def tiep_tuc():
+    input("Ấn phím bất kỳ để tiếp tục...")
+
 # Hàm nhập thông tin theo khung
 def STR_nhap_trong_khung(
      text_title=None,
@@ -83,6 +87,42 @@ def in_thong_tin(
             title=text_title, 
             border_style=border_style, 
             #title_align="left",
+            expand=expand, 
+            subtitle=subtitle, 
+            width=width
+        )
+    )
+# Hàm in thông tin lỗi theo khung
+def in_thong_tin_loi (
+    text_title="", 
+    text="", 
+    style_title="red", 
+    border_style="red", 
+    subtitle=None, 
+    expand=False, 
+    width=None):
+    """
+    Hiển thị thông tin trong khung.
+        text (str): Nội dung hiển thị bên trong khung.
+        text_title (str): Tiêu đề của khung (mặc định là "None").
+        style_title (str): Kiểu định dạng tiêu đề (mặc định là "bold white").
+        border_style (str): Màu sắc viền (mặc định là "blue").
+        subtitle (str): Phụ đề xuất hiện dưới khung (mặc định là None).
+        expand (bool): Nếu True, khung sẽ giãn theo chiều rộng màn hình (mặc định là False).
+        width (int): Độ rộng của khung. Nếu None, sẽ tự động tính theo nội dung (mặc định là None).
+    """
+    console = Console()
+    
+    # Tạo tiêu đề với kiểu định dạng
+    title_text = Text(text_title, style=style_title)
+    
+    # Tạo khung hiển thị
+    console.print(
+        Panel(
+            text, 
+            title=text_title, 
+            border_style=border_style, 
+            title_align="left",
             expand=expand, 
             subtitle=subtitle, 
             width=width

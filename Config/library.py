@@ -3,4 +3,6 @@ libraries = [
     # Thêm thư viện vào đây theo mẫu ở trên
     'rich',
     'csv',
+    'smtplib',
+    'email',
 ]

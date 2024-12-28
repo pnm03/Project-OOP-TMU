@@ -22,10 +22,10 @@
        - Địa điểm chuyến đi (mảng) -> `arr_diaDiemChuyenDi`
 
 4. **Tên hàm**: 
-   - Giống tên biến, nhưng kiểu dữ liệu trả về viết hoa.
+     - Các chữ cách nhau bởi dấu "_", kiểu dữ liệu trả về viết hoa.
      - Ví dụ:
        - Xuất -> `SRT_xuat()`
-       - Thông tin (mảng) -> `ARR_thongTin()`
+       - Thông tin (mảng) -> `ARR_thong_tin()`
 
 5. **Tên class**: 
    - Viết hoa mỗi chữ cái đầu.
