@@ -1,6 +1,5 @@
 Ho_Ten,Ngay_Sinh,Dia_Chi,So_Dien_Thoai,Email,Ma_Khach_Hang,Hang_Khach_Hang,So_Tien_Da_Giao_Dich,So_Luong_Giao_Dich,Ngay_Tao_Tai_Khoan,Diem_Tich_Luy,So_Tien_Tiet_Kiem
 Nguyễn Văn A,2000-01-01,Hà Nội,0123456789,example1@email.com,KH001,True,1000000,5,2022-01-01,100,500000
 Trần Thị B,1999-02-02,TP.HCM,0987654321,example2@email.com,KH002,False,2000000,10,2022-02-02,200,1000000
-Nguyen Van A,1990-01-01,Hanoi,0912345678,nguyenvana@example.com,KH165,True,5000000,50,2023-01-01,200,1000000
-Le Minh C,1992-09-21,Da Nang,0912341234,leminhc@example.com,KH618,True,7000000,70,2023-03-12,150,1500000
-Miuse,2003-03-05,HaNoi,09363283298983,a@gmail.com,KH545,False,0,0,2024-12-28,0,0
+Nguyen Van A,1990-01-01,Hanoi,0912345678,nguyenvana@example.com,KH633,True,5000000,50,2023-01-01,200,1000000
+Le Minh C,1992-09-21,Da Nang,0912341234,leminhc@example.com,KH364,True,7000000,70,2023-03-12,150,1500000

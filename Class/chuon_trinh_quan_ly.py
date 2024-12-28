@@ -356,19 +356,19 @@ Trân trọng,
                         continue  # Bỏ qua khách hàng này nếu đã tồn tại
                     # Tạo mật khẩu mới
                     mat_khau = self.STR_tao_mat_khau()
+                    ma_khach_hang = self.STR_tao_moi_makhachhang()
 
                     # Tạo tài khoản với thông tin đầy đủ
                     tai_khoan = TaiKhoan(
                         str_email,     # Tên tài khoản (Email)
                         mat_khau,      # Mật khẩu
-                        str_email,     # Sử dụng email làm mã khách hàng thay vì mã ngẫu nhiên
+                        ma_khach_hang,     # Sử dụng email làm mã khách hàng thay vì mã ngẫu nhiên
                         True,          # Tình trạng đăng nhập (mới tạo nên là True)
                         0              # Số lần đã đăng nhập (0 khi mới tạo)
                     )
                     self.tai_khoan_list.append(tai_khoan)
 
                     # Tạo đối tượng khách hàng mới
-                    ma_khach_hang = self.STR_tao_moi_makhachhang()
                     khach_hang = KhachHang(
                         str_hoTen, date_ngaySinh, str_diaChi, int_soDienThoai, str_email, 
                         ma_khach_hang, bool_hangKhachHang, str_soTienDaGiaoDich, 
@@ -378,7 +378,7 @@ Trân trọng,
 
                     # Tạo giao dịch mẫu (có thể thêm vào)
                     giao_dich = GiaoDich(
-                        str_maGiaoDich, str_email, str_soTienThanhToan, arr_hanhKhachDiCung, 
+                        str_maGiaoDich, ma_khach_hang, str_soTienThanhToan, arr_hanhKhachDiCung, 
                         date_ngayGiaoDich, str_hinhThucThanhToan, bool_trangThaiThanhToan, str_tenChuyenDi,
                         str_giaChuyenDi, str_giamGia, int_doDaiChuyenDi, arr_diaDiemThamQuan, 
                         date_ngayKhoiHanh, int_soLuongHanhKhach, str_thoiLuongChuyenDi, str_giaPhong, 
