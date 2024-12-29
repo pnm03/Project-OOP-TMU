@@ -23,3 +23,4 @@ class KhachHang(Nguoi):
                 f"SoTienGD={self.str_soTienDaGiaoDich}, SoLuongGD={self.int_soLuongGiaoDich}, "
                 f"NgayTaoTK={self.date_ngayTaoTaiKhoan}, DiemTichLuy={self.int_diemTichLuy}, "
                 f"SoTienTietKiem={self.str_soTienTietKiem}, {super().__str__()}]")
+    

@@ -21,6 +21,3 @@ quan_ly = QuanLyKhachHang()
 # quan_ly.tao_moi_tai_khoan('a.csv')
 # quan_ly.ChucNang_them_khach_hang()
 quan_ly.ChucNang_menu()
-
-
-

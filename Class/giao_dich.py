@@ -1,3 +1,4 @@
+
 class GiaoDich:
     def __init__(self, ma_giao_dich, ma_khach_hang, so_tien_thanh_toan, hanh_khach_di_cung, ngay_giao_dich, 
                  hinh_thuc_thanh_toan, trang_thai_thanh_toan, ten_chuyen_di, gia_chuyen_di, giam_gia, do_dai_chuyen_di, 
@@ -34,3 +35,4 @@ class GiaoDich:
         return (f"GiaoDich[MaGD={self.str_maGiaoDich}, MaKH={self.str_maKhachHang}, SoTienTT={self.str_soTienThanhToan}, "
                 f"TenChuyenDi={self.str_tenChuyenDi}, NgayGiaoDich={self.date_ngayGiaoDich}, "
                 f"TrangThaiThanhToan={self.bool_trangThaiThanhToan}]")
+    

@@ -16,3 +16,4 @@ class Nguoi:
          return self.str_email
      def get_sdt (self):
          return self.int_soDienThoai
+     

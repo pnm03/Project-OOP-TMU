@@ -2,7 +2,6 @@ import csv
 import sys
 import string
 import random
-import re
 from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
@@ -120,7 +119,7 @@ class QuanLyKhachHang:
             print(f"Đã xảy ra lỗi khi lưu dữ liệu vào file: {e}")
 
 
-
+    # Menu
     def ChucNang_menu(self):
         in_thong_tin("M E N U", "1. Thêm khách\n2. Xóa khách hàng\n3. Tìm kiếm khách hàng\n4. Chỉnh sửa khách hàng\n5. Xem báo cáo\n6. Thoát chương trình")
         try:
@@ -144,23 +143,6 @@ class QuanLyKhachHang:
             clear_screen()
             sys.exit()
 
-    import re
-
-    # Kiểm tra định dạng số điện thoại
-    def BOOL_kiem_tra_so_dien_thoai(self, so_dien_thoai):
-        pattern = r"^0\d{9,11}$"
-        return bool(re.match(pattern, so_dien_thoai))
-    # Kiểm tra định dạng email 
-    def BOOL_kiem_tra_email(self, email):
-        pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-        return bool(re.match(pattern, email))
-    # Kiểm tra định dạng ngày
-    def BOOL_kiem_tra_ngay_sinh(self, ngay_sinh):
-        try:
-            datetime.strptime(ngay_sinh, "%Y-%m-%d")
-            return True
-        except ValueError:
-            return False
     # Gửi mail
     def gui_mail(self, email, name, passwork):
         loading_spinner1(1)
@@ -241,7 +223,7 @@ Trân trọng,
                 in_thong_tin_loi("Lỗi", "Vui lòng nhập đầy đủ họ tên")
             while True:
                 date_ngaySinh = STR_nhap_trong_khung("Nhập ngày sinh", "YYYY-MM-DD")
-                if self.BOOL_kiem_tra_ngay_sinh(date_ngaySinh):
+                if BOOL_kiem_tra_ngay_sinh(date_ngaySinh):
                     break
                 in_thong_tin_loi("Lỗi", "Ngày sinh không hợp lệ. Vui lòng nhập lại.")
             while True:
@@ -251,13 +233,13 @@ Trân trọng,
                 in_thong_tin_loi("Lỗi", "Vui lòng nhập đầy đủ địa chỉ")
             while True:
                 int_soDienThoai = STR_nhap_trong_khung("Nhập số điện thoại", "Nhập số")
-                if self.BOOL_kiem_tra_so_dien_thoai(int_soDienThoai):
+                if BOOL_kiem_tra_so_dien_thoai(int_soDienThoai):
                     break
                 in_thong_tin_loi("Lỗi", "Số điện thoại không hợp lệ. Vui lòng nhập lại.")
 
             while True:
                 str_email = STR_nhap_trong_khung("Nhập email", "abc@gmail.com")
-                if self.BOOL_kiem_tra_email(str_email):
+                if BOOL_kiem_tra_email(str_email):
                     break
                 in_thong_tin_loi("Lỗi", "Email không hợp lệ. Vui lòng nhập lại.")
 
@@ -357,7 +339,7 @@ Trân trọng,
                     # Tạo mật khẩu mới
                     mat_khau = self.STR_tao_mat_khau()
                     ma_khach_hang = self.STR_tao_moi_makhachhang()
-
+                    
                     # Tạo tài khoản với thông tin đầy đủ
                     tai_khoan = TaiKhoan(
                         str_email,     # Tên tài khoản (Email)

@@ -2,6 +2,8 @@ import time
 import os
 import sys
 import random
+from datetime import datetime
+import re
 # Import tất cả thư viện tại đây
 from rich.progress import Progress
 from rich.console import Console
@@ -9,6 +11,22 @@ from rich.panel import Panel
 from rich.text import Text
 
 # Tạo hàm dùng chung thì comment tại main để người khác dùng với
+
+# Kiểm tra định dạng số điện thoại
+def BOOL_kiem_tra_so_dien_thoai(self, so_dien_thoai):
+    pattern = r"^0\d{9,11}$"
+    return bool(re.match(pattern, so_dien_thoai))
+# Kiểm tra định dạng email 
+def BOOL_kiem_tra_email(self, email):
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return bool(re.match(pattern, email))
+# Kiểm tra định dạng ngày
+def BOOL_kiem_tra_ngay_sinh(self, ngay_sinh):
+    try:
+        datetime.strptime(ngay_sinh, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
 
 # Hàm tạo độ ngưng
 def tiep_tuc():
