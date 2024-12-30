@@ -13,15 +13,15 @@ from rich.text import Text
 # Tạo hàm dùng chung thì comment tại main để người khác dùng với
 
 # Kiểm tra định dạng số điện thoại
-def BOOL_kiem_tra_so_dien_thoai(self, so_dien_thoai):
+def BOOL_kiem_tra_so_dien_thoai(so_dien_thoai):
     pattern = r"^0\d{9,11}$"
     return bool(re.match(pattern, so_dien_thoai))
 # Kiểm tra định dạng email 
-def BOOL_kiem_tra_email(self, email):
+def BOOL_kiem_tra_email(email):
     pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     return bool(re.match(pattern, email))
 # Kiểm tra định dạng ngày
-def BOOL_kiem_tra_ngay_sinh(self, ngay_sinh):
+def BOOL_kiem_tra_ngay_sinh(ngay_sinh):
     try:
         datetime.strptime(ngay_sinh, "%Y-%m-%d")
         return True

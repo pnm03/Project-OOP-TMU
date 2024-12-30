@@ -1,9 +1,19 @@
 import subprocess
 import sys
+import signal
+import sys
+import time
 from Config.function import *
 
 # Đọc các thư viện từ file cấu hình
 from Config.library import libraries
+
+# Hàm xử lý khi người dùng nhấn phím tạo ra lỗi dừng đột ngột
+def handle_interrupt(signal, frame):
+     sys.exit(1)  # Thoát chương trình
+
+# Đăng ký xử lý tín hiệu SIGINT
+signal.signal(signal.SIGINT, handle_interrupt)
 
 # Cài đặt thư viện
 def install_libraries(libraries):

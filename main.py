@@ -16,8 +16,22 @@ from Class.chuon_trinh_quan_ly import *
 
 # in_thong_tin("Menu", "1. Chuc nang a\n2. Chuc nang b\n3. Chuc nang c");
 
-quan_ly = QuanLyKhachHang()
-# print(quan_ly.khach_hang_list[0])
-# quan_ly.tao_moi_tai_khoan('a.csv')
-# quan_ly.ChucNang_them_khach_hang()
-quan_ly.ChucNang_menu()
+# Hàm chính
+def main():
+     try:
+          quan_ly = QuanLyKhachHang()
+          # print(quan_ly.khach_hang_list[0])
+          # quan_ly.tao_moi_tai_khoan('a.csv')
+          # quan_ly.ChucNang_them_khach_hang()
+          quan_ly.ChucNang_menu()
+     except KeyboardInterrupt:
+          in_thong_tin_loi("Lỗi", f"Chương trình gặp lỗi không mong muốn. Đóng chương trình")
+     except Exception as e:
+          in_thong_tin_loi("Lỗi", f"Chương trình gặp lỗi không mong muốn. Đóng chương trình")
+     finally:
+          print()
+          in_thong_tin("", "Đóng chương trình. Cảm ơn bạn đã sử dụng")
+
+# Chạy chương trình
+if __name__ == "__main__":
+    main()

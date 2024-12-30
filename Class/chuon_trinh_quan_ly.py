@@ -6,11 +6,10 @@ from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
 from Config.email_config import *
-from Class.nguoi import Nguoi
-from Class.giao_dich import GiaoDich
-from Class.khach_hang import KhachHang
-from Class.nhan_vien import NhanVien
-from Class.tai_khoan import TaiKhoan
+from Class.giao_dich import *
+from Class.khach_hang import *
+from Class.nhan_vien import *
+from Class.tai_khoan import *
 from Config.function import *
 
 class QuanLyKhachHang:
@@ -27,6 +26,9 @@ class QuanLyKhachHang:
             self.khach_hang_list = []
             self.nhan_vien_list = []
             self.tai_khoan_list = []
+            
+            
+
             
             # Đọc dữ liệu từ các file CSV và lưu vào danh sách
             self.doc_du_lieu_tu_file('Database/khach_hang.csv', 'khach_hang')
@@ -84,9 +86,20 @@ class QuanLyKhachHang:
                                     'Hang_Khach_Hang', 'So_Tien_Da_Giao_Dich', 'So_Luong_Giao_Dich', 'Ngay_Tao_Tai_Khoan', 
                                     'Diem_Tich_Luy', 'So_Tien_Tiet_Kiem'])
                 for kh in self.khach_hang_list:
-                    writer.writerow([kh.str_hoTen, kh.date_ngaySinh, kh.str_diaChi, kh.int_soDienThoai, kh.str_email, kh.str_maKhachHang, 
-                                    kh.bool_hangKhachHang, kh.str_soTienDaGiaoDich, kh.int_soLuongGiaoDich, kh.date_ngayTaoTaiKhoan, 
-                                    kh.int_diemTichLuy, kh.str_soTienTietKiem])
+                    writer.writerow([
+                        kh.lay_thong_tin('str_hoTen'), 
+                        kh.lay_thong_tin('date_ngaySinh'), 
+                        kh.lay_thong_tin('str_diaChi'), 
+                        kh.lay_thong_tin('int_soDienThoai'), 
+                        kh.lay_thong_tin('str_email'), 
+                        kh.lay_thong_tin('str_maKhachHang'), 
+                        kh.lay_thong_tin('str_hangKhachHang'), 
+                        kh.lay_thong_tin('str_soTienDaGiaoDich'), 
+                        kh.lay_thong_tin('int_soLuongGiaoDich'), 
+                        kh.lay_thong_tin('date_ngayTaoTaiKhoan'), 
+                        kh.lay_thong_tin('int_diemTichLuy'), 
+                        kh.lay_thong_tin('str_soTienTietKiem')
+                    ])
 
             # Lưu thông tin Tài khoản (ghi tiếp)
             with open('Database/tai_khoan.csv', mode='w', newline='', encoding='utf-8') as file:
@@ -95,8 +108,13 @@ class QuanLyKhachHang:
                 if file.tell() == 0:
                     writer.writerow(['Ten_Tai_Khoan', 'Mat_Khau', 'Ma_Nguoi_Dung', 'Tinh_Trang_Dang_Nhap', 'So_Lan_Da_Dang_Nhap'])
                 for tk in self.tai_khoan_list:
-                    writer.writerow([tk.str_tenTaiKhoan, tk.str_matKhau, tk.str_maNguoiDung, tk.bool_tinhTrangDangNhap, tk.int_soLanDaDangNhap])
-
+                    writer.writerow([
+                        tk.lay_thong_tin('str_tenTaiKhoan'), 
+                        tk.lay_thong_tin('str_matKhau'), 
+                        tk.lay_thong_tin('str_maNguoiDung'), 
+                        tk.lay_thong_tin('bool_tinhTrangDangNhap'), 
+                        tk.lay_thong_tin('int_soLanDaDangNhap')
+                    ])
             # Lưu thông tin Giao dịch (ghi tiếp)
             with open('Database/giao_dich.csv', mode='w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
@@ -107,14 +125,33 @@ class QuanLyKhachHang:
                                     'Giam_Gia', 'Do_Dai_Chuyen_Di', 'Dia_Diem_Tham_Quan', 'Ngay_Khoi_Hanh', 'So_Luong_Hanh_Khach', 
                                     'Thoi_Luong_Chuyen_Di', 'Gia_Phong', 'Ten_Noi_O', 'Mo_Ta', 'Danh_Gia', 'Ten_Dia_Diem', 
                                     'Ten_Phuong_Tien', 'So_Luong_Cho_Ngoi', 'Don_Vi_Cung_Cap'])
-                for gd in self.giao_dich_list:
-                    writer.writerow([gd.str_maGiaoDich, gd.str_maKhachHang, gd.str_soTienThanhToan, gd.arr_hanhKhachDiCung, gd.date_ngayGiaoDich,
-                                    gd.str_hinhThucThanhToan, gd.bool_trangThaiThanhToan, gd.str_tenChuyenDi, gd.str_giaChuyenDi, 
-                                    gd.str_giamGia, gd.int_doDaiChuyenDi, gd.arr_diaDiemThamQuan, gd.date_ngayKhoiHanh, 
-                                    gd.int_soLuongHanhKhach, gd.str_thoiLuongChuyenDi, gd.str_giaPhong, gd.str_tenNoiO, gd.str_moTa, 
-                                    gd.str_danhGia, gd.str_tenDiaDiem, gd.str_tenPhuongTien, gd.str_soLuongChoNgoi, gd.str_donViCungCap])
-
-            print("Dữ liệu cần thiết đã được lưu vào các file CSV.")
+                    for gd in self.giao_dich_list:
+                        writer.writerow([
+                            gd.lay_thong_tin('str_maGiaoDich'), 
+                            gd.lay_thong_tin('str_maKhachHang'), 
+                            gd.lay_thong_tin('str_soTienThanhToan'), 
+                            gd.lay_thong_tin('arr_hanhKhachDiCung'), 
+                            gd.lay_thong_tin('date_ngayGiaoDich'),
+                            gd.lay_thong_tin('str_hinhThucThanhToan'),
+                            gd.lay_thong_tin('bool_trangThaiThanhToan'),
+                            gd.lay_thong_tin('str_tenChuyenDi'), 
+                            gd.lay_thong_tin('str_giaChuyenDi'), 
+                            gd.lay_thong_tin('str_giamGia'), 
+                            gd.lay_thong_tin('int_doDaiChuyenDi'), 
+                            gd.lay_thong_tin('arr_diaDiemThamQuan'), 
+                            gd.lay_thong_tin('date_ngayKhoiHanh'),
+                            gd.lay_thong_tin('int_soLuongHanhKhach'),
+                            gd.lay_thong_tin('str_thoiLuongChuyenDi'),
+                            gd.lay_thong_tin('str_giaPhong'),
+                            gd.lay_thong_tin('str_tenNoiO'),
+                            gd.lay_thong_tin('str_moTa'),
+                            gd.lay_thong_tin('str_danhGia'),
+                            gd.lay_thong_tin('str_tenDiaDiem'),
+                            gd.lay_thong_tin('str_tenPhuongTien'),
+                            gd.lay_thong_tin('str_soLuongChoNgoi'),
+                            gd.lay_thong_tin('str_donViCungCap')
+                        ])
+            in_thong_tin("", "Đã cập nhật cơ sở dữ liệu")
         except Exception as e:
             print(f"Đã xảy ra lỗi khi lưu dữ liệu vào file: {e}")
 
@@ -146,6 +183,7 @@ class QuanLyKhachHang:
     # Gửi mail
     def gui_mail(self, email, name, passwork):
         loading_spinner1(1)
+        print()
         try:
             msg = MIMEText(f"""
 Xin chào {name},
@@ -169,7 +207,7 @@ Trân trọng,
             server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
             server.sendmail(EMAIL_USERNAME, email, msg.as_string())
             server.quit()
-            print("\nĐã gửi mail thành công!")
+            in_thong_tin("", "Đã gửi mail thành công!")
         except smtplib.SMTPException as e:
             print(f"Lỗi gửi mail: {e}")
         except Exception as e:
@@ -177,8 +215,6 @@ Trân trọng,
 
 # Viết tất cả các hàm chức năng dưới này kèm comment
 # [1]
-
-# [2]
     def ChucNang_them_khach_hang(self):
         in_thong_tin("MENU THÊM KHÁCH HÀNG", "1. Thêm khách hàng thủ công\n2. Thêm khách hàng bằng tệp có sẵn\n3. Trở về menu")
     
@@ -254,7 +290,7 @@ Trân trọng,
             ma_khach_hang = self.STR_tao_moi_makhachhang()
 
             # Các trường thông tin khác (mặc định hoặc nhập thêm nếu cần)
-            bool_hangKhachHang = False  
+            str_hangKhachHang = "Thường"  
             str_soTienDaGiaoDich = "0"
             int_soLuongGiaoDich = 0
             date_ngayTaoTaiKhoan = datetime.today().strftime('%Y-%m-%d')
@@ -269,6 +305,7 @@ Trân trọng,
             xac_nhan = STR_nhap_trong_khung("Xác nhận lưu khách hàng này?", "Chọn co/khong")
             if xac_nhan.lower() != 'co':
                 in_thong_tin("", "Hủy thao tác thêm khách hàng")
+                self.lam_moi_du_lieu()
                 tiep_tuc()
                 clear_screen()
                 self.ChucNang_them_khach_hang()
@@ -276,7 +313,7 @@ Trân trọng,
             # Tạo đối tượng khách hàng mới
             khach_hang = KhachHang(
                 str_hoTen, date_ngaySinh, str_diaChi, int_soDienThoai, str_email, 
-                ma_khach_hang, bool_hangKhachHang, str_soTienDaGiaoDich, 
+                ma_khach_hang, str_hangKhachHang, str_soTienDaGiaoDich, 
                 int_soLuongGiaoDich, date_ngayTaoTaiKhoan, int_diemTichLuy, str_soTienTietKiem
             )
             self.khach_hang_list.append(khach_hang)
@@ -291,13 +328,15 @@ Trân trọng,
             )
             self.tai_khoan_list.append(tai_khoan)
 
-            in_thong_tin("Thêm khách hàng thành công", f"Tài khoản đã được tạo với thông tin\nTàikhoản: {str_email}\nMật khẩu: {mat_khau}")
+            in_thong_tin("Thêm khách hàng thành công", f"Tài khoản đã được tạo với thông tin\nMã khách hàng: {ma_khach_hang}\nTàikhoản: {str_email}\nMật khẩu: {mat_khau}")
             xacNhanMail = STR_nhap_trong_khung("Bạn có muốn gửi mail tới khách hàng không?", "Chọn co/khong")
             if xacNhanMail != 'khong':
                 self.gui_mail(str_email, str_hoTen, mat_khau)
-                # self.gui_mail("qminh203.fw@gmail.com", "Kary", "123")
             # Lưu lại dữ liệu vào file
             self.luu_du_lieu_vao_file()
+            tiep_tuc()
+            clear_screen()
+            self.ChucNang_them_khach_hang()
 
         except Exception as e:
             print(f"Đã xảy ra lỗi khi thêm khách hàng bằng tay: {e}")
@@ -306,7 +345,7 @@ Trân trọng,
     def kiem_tra_khach_hang_ton_tai(self, email, so_dien_thoai):
         # Kiểm tra xem khách hàng đã tồn tại chưa
         for kh in self.khach_hang_list:
-            if kh.get_email() == email or kh.get_sdt() == so_dien_thoai:  # Email là phần tử thứ 4 và số điện thoại là thứ 5
+            if kh.lay_thong_tin("str_email") == email or kh.lay_thong_tin("int_soDienThoai") == so_dien_thoai:  # Email là phần tử thứ 4 và số điện thoại là thứ 5
                 return True
         return False
 
@@ -320,10 +359,11 @@ Trân trọng,
             with open(file_path, mode='r', encoding='utf-8') as file:
                 reader = csv.reader(file)
                 next(reader)  # Bỏ qua dòng tiêu đề
-
+                thong_bao_them_tk = ""
+                stt_tk = 1
                 for row in reader:
                     str_hoTen, date_ngaySinh, str_diaChi, int_soDienThoai, str_email, \
-                    bool_hangKhachHang, str_soTienDaGiaoDich, int_soLuongGiaoDich, \
+                    str_hangKhachHang, str_soTienDaGiaoDich, int_soLuongGiaoDich, \
                     date_ngayTaoTaiKhoan, int_diemTichLuy, str_soTienTietKiem, str_maGiaoDich, \
                     str_soTienThanhToan, arr_hanhKhachDiCung, date_ngayGiaoDich, \
                     str_hinhThucThanhToan, bool_trangThaiThanhToan, str_tenChuyenDi, \
@@ -334,12 +374,20 @@ Trân trọng,
 
                     # Kiểm tra nếu khách hàng đã tồn tại trong database
                     if self.kiem_tra_khach_hang_ton_tai(str_email, int_soDienThoai):
-                        in_thong_tin("Thông báo", f"Khách hàng với email {str_email} hoặc số điện thoại {int_soDienThoai} đã tồn tại.")
+                        in_thong_tin_loi("Cảnh báo", f"Khách hàng với email {str_email} hoặc số điện thoại {int_soDienThoai} đã tồn tại.")
                         continue  # Bỏ qua khách hàng này nếu đã tồn tại
                     # Tạo mật khẩu mới
                     mat_khau = self.STR_tao_mat_khau()
                     ma_khach_hang = self.STR_tao_moi_makhachhang()
-                    
+
+                    # Xác nhận thêm mới khách hàng
+                    in_thong_tin("XÁC NHẬN THÔNG TIN KHÁCH HÀNG", f"Họ tên: {str_hoTen}\nNgày sinh: {date_ngaySinh}\nĐịa chỉ: {str_diaChi}\nSố điện thoại: {int_soDienThoai}\nEmail: {str_email}\nMã khách hàng: {ma_khach_hang}\nMật khẩu tài khoản: {mat_khau}")
+            
+                    xac_nhan = STR_nhap_trong_khung("Xác nhận lưu khách hàng này?", "Chọn co/khong")
+                    if xac_nhan.lower() != 'co':
+                        in_thong_tin("", f"Hủy lưu khách hàng: {ma_khach_hang}")
+                        continue
+                    in_thong_tin("Thông báo", f"Đã xác nhân thêm khách hàng {ma_khach_hang}")
                     # Tạo tài khoản với thông tin đầy đủ
                     tai_khoan = TaiKhoan(
                         str_email,     # Tên tài khoản (Email)
@@ -353,7 +401,7 @@ Trân trọng,
                     # Tạo đối tượng khách hàng mới
                     khach_hang = KhachHang(
                         str_hoTen, date_ngaySinh, str_diaChi, int_soDienThoai, str_email, 
-                        ma_khach_hang, bool_hangKhachHang, str_soTienDaGiaoDich, 
+                        ma_khach_hang, str_hangKhachHang, str_soTienDaGiaoDich, 
                         int_soLuongGiaoDich, date_ngayTaoTaiKhoan, int_diemTichLuy, str_soTienTietKiem
                     )
                     self.khach_hang_list.append(khach_hang)
@@ -368,31 +416,67 @@ Trân trọng,
                         str_soLuongChoNgoi, str_donViCungCap
                     )
                     self.giao_dich_list.append(giao_dich)
-
-                    print(f"Tài khoản đã được tạo với mật khẩu: {mat_khau}")
-
+                    
+                    
+                    # Tạo thông báo các tài khoản được tạotạo
+                    thong_bao_them_tk += f"[{stt_tk}] Tài khoản đã được tạo với\nMã khách hàng: {ma_khach_hang}\nTài khoản: {str_email}\nMật khẩu: {mat_khau}\n\n"
+                    stt_tk += 1
+                    xacNhanMail = STR_nhap_trong_khung(f"Bạn có muốn gửi mail tới khách hàng {ma_khach_hang} không?", "Chọn co/khong")
+                    if xacNhanMail != 'khong':
+                        self.gui_mail(str_email, str_hoTen, mat_khau)
+                    # print(f"Tài khoản đã được tạo với mật khẩu: {mat_khau}")
+                    # in_thong_tin()
                     
 
                 # Lưu lại dữ liệu vào các file CSV
-                self.luu_du_lieu_vao_file()
+                tiep_tuc()
+                clear_screen()
+                if (stt_tk == 1):
+                    in_thong_tin("Thông báo", "Không có khách hàng mới được thêm")
+                    tiep_tuc()
+                    clear_screen()
+                    self.ChucNang_them_khach_hang()
+                else:
+                    in_thong_tin("Thông báo", thong_bao_them_tk)
+                    self.luu_du_lieu_vao_file()
+                    tiep_tuc()
+                    clear_screen()
+                    self.ChucNang_them_khach_hang()
 
         except Exception as e:
             clear_screen()
             in_thong_tin_loi(f"Đã xảy ra lỗi khi thêm user từ file {file_path}", "Vui lòng đảm bảo file đúng định dạng và có tồn tại")
+            print(e)
             tiep_tuc()
             clear_screen()
             self.ChucNang_them_khach_hang()
 
 
     def STR_tao_moi_makhachhang(self):
-        """Tạo mã khách hàng mới theo định dạng KHxxx, trong đó xxx là một chuỗi số ngẫu nhiên."""
-        return f"KH{random.randint(100, 999)}"
+        ma_khach_hang = random.randint(100, 999)
+        while True:
+            mkh = f"KH{ma_khach_hang}"
+            if not any(a.lay_thong_tin("str_maKhachHang") == mkh for a in self.khach_hang_list):
+                
+                return mkh
+            ma_khach_hang = random.randint(100, 999)
     def STR_tao_mat_khau(self, length=8):
-        """Tạo mật khẩu ngẫu nhiên dài 8 ký tự gồm chữ và số."""
+        #Tạo mật khẩu ngẫu nhiên dài 8 ký tự gồm chữ và số.
         characters = string.ascii_letters + string.digits
         return ''.join(random.choice(characters) for i in range(length))
+
+# [2]
+# Viết tất cả các hàm chức năng dưới này kèm comment
+# In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
+
 # [3]
+# Viết tất cả các hàm chức năng dưới này kèm comment
+# In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
 
 # [4]
+# Viết tất cả các hàm chức năng dưới này kèm comment
+# In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
 
 # [5]
+# Viết tất cả các hàm chức năng dưới này kèm comment
+# In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
