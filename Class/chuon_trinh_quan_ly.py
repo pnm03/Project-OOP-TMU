@@ -156,59 +156,33 @@ class QuanLyKhachHang:
             print(f"Đã xảy ra lỗi khi lưu dữ liệu vào file: {e}")
 
     def kiem_tra_dang_nhap(self):
-        """
-        Hàm kiểm tra đăng nhập và xử lý theo loại người dùng.
-        Nếu là NV, chuyển đến menu chức năng.
-        Nếu là KH, hiển thị tùy chọn đổi mật khẩu hoặc thoát.
-        Args:
-            quan_ly (QuanLyKhachHang): Đối tượng quản lý khách hàng, tài khoản, giao dịch.
-        Returns:
-            None
-        """
+        in_thong_tin("ĐĂNG NHẬP", "Nhập thông tin tài khoản, mật khẩu để đăng nhập")
         while True:
-            ten_tai_khoan = STR_nhap_trong_khung("Tên tài khoản", "Nhập tên tài khoản: ").strip()
-            mat_khau = STR_nhap_trong_khung("Mật khẩu", "Nhập mật khẩu: ").strip()
+            ten_tai_khoan = STR_nhap_trong_khung("Tên tài khoản", "Nhập tên tài khoản").strip()
+            mat_khau = STR_nhap_trong_khung("Mật khẩu", "Nhập mật khẩu").strip()
 
             for tai_khoan in self.tai_khoan_list:
                 if tai_khoan.lay_thong_tin("str_tenTaiKhoan") == ten_tai_khoan:
                     if tai_khoan.Bool_kiemTraMatKhau(ten_tai_khoan, mat_khau):
-                        in_thong_tin("Đăng nhập thành công", "Chúc mừng bạn đã đăng nhập thành công.")#quan_ly.luu_du_lieu_vao_file()  # Cập nhật dữ liệu vào file
-
+                        clear_screen
+                        in_thong_tin("Đăng nhập thành công", "Chúc mừng bạn đã đăng nhập thành công.")
+                        tiep_tuc()
+                        clear_screen()
                         ma_nguoi_dung = tai_khoan.lay_thong_tin("str_maNguoiDung")
 
                         # Nếu là nhân viên (NV), chuyển đến menu chức năng
-                        if "NV" in ma_nguoi_dung:
-                            while True:
-                                in_thong_tin("Lựa chọn", "1. Vào menu chức năng\n2. Đổi mật khẩu cho khách hàng\n3. Đăng xuất")
-                                lua_chon = STR_nhap_trong_khung("Nhập lựa chọn", "Nhập lựa chọn (1-3)").strip()
-                                if lua_chon == "1":
-                                    self.ChucNang_menu()  # Chuyển đến menu chức năng cho nhân viên
-                                    break
-                                elif lua_chon == "2":
-                                    ten_khach_hang = STR_nhap_trong_khung("Tên tài khoản khách hàng", "Nhập tên tài khoản khách hàng cần đổi mật khẩu: ").strip()
-                                    for kh_tai_khoan in self.tai_khoan_list:
-                                        if kh_tai_khoan.lay_thong_tin("str_tenTaiKhoan") == ten_khach_hang and "KH" in kh_tai_khoan.lay_thong_tin("str_maNguoiDung"):
-                                            mat_khau_moi = STR_nhap_trong_khung("Mật khẩu", "Nhập mật khẩu mới: ").strip()
-                                            kh_tai_khoan.chinhSuaThongTin(mat_khau=mat_khau_moi)
-                                            in_thong_tin("Thông báo", f"Mật khẩu của khách hàng {ten_khach_hang} đã được đổi thành công.")
-                                            self.luu_du_lieu_vao_file()  # Lưu thay đổi vào file
-                                            break
-                                    else:
-                                        in_thong_tin_loi("Lỗi", "Không tìm thấy tài khoản khách hàng.")
-                                elif lua_chon == "3":
-                                    in_thong_tin("Thông báo", "Đăng xuất.")
-                                    break
-                                else:
-                                    in_thong_tin_loi("Lỗi", "Lựa chọn không hợp lệ. Vui lòng thử lại.")
-                            return None
-                        
-                        # Nếu là khách hàng (KH), hiển thị tùy chọn đổi mật khẩu hoặc thoát
+                        if "NV" in ma_nguoi_dung:# kiểm tra mã người dùng
+                            self.ChucNang_menu()  # Chuyển đến menu chức năng cho nhân viên
+                            break                       
+                        # Nếu là khách hàng (KH), hiển thị tùy chọn đổi mật khẩu hoặc đăng xuất
                         elif "KH" in ma_nguoi_dung:
                             while True:
                                 in_thong_tin("Lựa chọn","1. Đổi mật khẩu\n2. Đăng xuất")
                                 lua_chon = STR_nhap_trong_khung("","Nhập lựa chọn 1 hoặc 2").strip()
+                                tiep_tuc()
+                                clear_screen()
                                 if lua_chon == "1":
-                                    mat_khau_moi = STR_nhap_trong_khung("", "Nhập mật khẩu mới: ").strip()                                
+                                    mat_khau_moi = STR_nhap_trong_khung("Mật khẩu", "Nhập mật khẩu mới: ").strip()                                
                                     tai_khoan.chinhSuaThongTin(mat_khau=mat_khau_moi)
                                     in_thong_tin("Thông báo", "Mật khẩu đã được đổi thành công.")
                                     self.luu_du_lieu_vao_file()  # Lưu lại thay đổi vào file
@@ -221,19 +195,21 @@ class QuanLyKhachHang:
                         return None
                     else:
                         in_thong_tin_loi("Đăng nhập thất bại", "Sai mật khẩu. Vui lòng thử lại.")
+                        if tai_khoan.lay_thong_tin("int_soLanDaDangNhap")==2:
+                            in_thong_tin_loi("Cảnh báo", "Bạn chỉ còn 1 lần đăng nhập.")
                         # Kiểm tra nếu đã vượt quá số lần đăng nhập sai
                         if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") >= 3:
                             in_thong_tin_loi("Cảnh báo", "Tài khoản đã bị khóa do nhập sai mật khẩu quá 3 lần.")
                             tai_khoan.chinhSuaThongTin(tinh_trang_dang_nhap=False)  # Khóa tài khoản
                         self.luu_du_lieu_vao_file()  # Cập nhật dữ liệu vào file
-                        return None
+                        self.kiem_tra_dang_nhap()
             else:  
                 in_thong_tin_loi("Đăng nhập thất bại", "Tên tài khoản hoặc mật khẩu không đúng.")
               
 
     # Menu CN
     def ChucNang_menu(self):
-        in_thong_tin("M E N U", "1. Thêm khách\n2. Xóa khách hàng\n3. Tìm kiếm khách hàng\n4. Chỉnh sửa khách hàng\n5. Xem báo cáo\n6. Thoát chương trình")
+        in_thong_tin("M E N U", "1. Thêm khách\n2. Tìm kiếm khách hàng\n3. Chỉnh sửa khách hàng\n4. Xóa khách hàng\n5. Xem báo cáo\n6. Thoát chương trình")
         try:
             lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập từ 1 đến 6")
             if lua_chon == "1":
@@ -241,13 +217,13 @@ class QuanLyKhachHang:
                 self.ChucNang_them_khach_hang()
             elif lua_chon == "2":
                 clear_screen()
-                self.ChucNang_xoa_khach_hang()
+                self.ChucNang_tim_kiem_khach_hang()
             elif lua_chon == "3":
                 clear_screen()
-                self.ChucNang_tim_kiem_khach_hang()
+                self.ChucNang_chinh_sua_khach_hang()
             elif lua_chon == "4":
                 clear_screen()
-                self.ChucNang_chinh_sua_khach_hang()
+                self.ChucNang_xoa_khach_hang()
             elif lua_chon == "5":
                 clear_screen()
                 self.ChucNang_bao_cao()
@@ -650,41 +626,54 @@ Trân trọng,
 # [3]
 # Viết tất cả các hàm chức năng dưới này kèm comment
 # In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
-#xoakhachhang
     def ChucNang_xoa_khach_hang(self):
-        in_thong_tin("MENU XÓA KHÁCH HÀNG", "1. Xóa khách hàng theo mã\n2. Trở về menu")
-
-        try:
+        """
+        Chức năng xóa khách hàng.
+        """
+        while True:
+            in_thong_tin("MENU XÓA KHÁCH HÀNG", "1. Xóa khách hàng theo mã\n2. Trở về menu")
             lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập 1 hoặc 2")
+
             if lua_chon == "1":
                 self.xoa_khach_hang()
                 tiep_tuc()
                 clear_screen()
                 self.ChucNang_xoa_khach_hang()
             elif lua_chon == "2":
-                in_thong_tin("THÔNG BÁO", "Quay lại menu chính.")
+                clear_screen()
+                self.ChucNang_menu()
+                break
             else:
                 in_thong_tin("LỖI", "Lựa chọn không hợp lệ. Vui lòng thao tác lại.")
-                self.ChucNang_xoa_khach_hang()
-        except ValueError:
-            in_thong_tin("LỖI", "Dữ liệu nhập không hợp lệ. Vui lòng thao tác lại.")
-            self.ChucNang_xoa_khach_hang()
+                tiep_tuc()
+                clear_screen()
 
     def xoa_khach_hang(self):
+        """
+        Xóa một khách hàng dựa trên mã khách hàng.
+        """
         in_thong_tin("CHỨC NĂNG XÓA KHÁCH HÀNG", "")
         ma_khach_hang = STR_nhap_trong_khung("Nhập mã khách hàng cần xóa", "Ví dụ: KH001")
 
-        # Đọc danh sách khách hàng từ file
-        danh_sach_khach_hang = self.doc_du_lieu_tu_file('Database/khach_hang.csv', 'khach_hang')
-
         # Tìm kiếm khách hàng theo mã
-        khach_hang = next((kh for kh in danh_sach_khach_hang if kh.lay_thong_tin("str_maKhachHang") == ma_khach_hang), None)
+        khach_hang = next((kh for kh in self.khach_hang_list if kh.lay_thong_tin("str_maKhachHang") == ma_khach_hang), None)
+
         if not khach_hang:
             in_thong_tin("THÔNG BÁO", "Khách hàng không tồn tại. Vui lòng kiểm tra lại mã khách hàng.")
             return
 
         # Hiển thị thông tin khách hàng
-        thong_tin = "\n".join(f"{key}: {value}" for key, value in khach_hang.items())
+        thong_tin = (f"Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n"
+                    f"Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n"
+                    f"Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n"
+                    f"Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n"
+                    f"Email: {khach_hang.lay_thong_tin('str_email')}\n"
+                    f"Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n"
+                    f"Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}\n"
+                    f"Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n"
+                    f"Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n"
+                    f"Ngày tạo tài khoản: {khach_hang.lay_thong_tin('date_ngayTaoTaiKhoan')}\n"
+                    f"Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}")
         in_thong_tin("THÔNG TIN KHÁCH HÀNG", thong_tin)
 
         # Xác nhận thao tác
@@ -694,31 +683,19 @@ Trân trọng,
             return
 
         # Xóa khách hàng khỏi danh sách
-        danh_sach_khach_hang.remove(khach_hang)
+        self.khach_hang_list.remove(khach_hang)
 
-        # Lưu danh sách cập nhật lại file
-        self.luu_du_lieu(danh_sach_khach_hang)
+        # Xóa các giao dịch liên quan
+        self.giao_dich_list = [gd for gd in self.giao_dich_list if gd.lay_thong_tin("str_maKhachHang") != ma_khach_hang]
 
         # Thông báo thành công
-        in_thong_tin("THÀNH CÔNG", "Khách hàng đã được xóa thành công.")
+        in_thong_tin("THÀNH CÔNG", "Khách hàng và các giao dịch liên quan đã được xóa thành công.")
 
-    # def doc_du_lieu(self):
-    #     """Đọc dữ liệu khách hàng từ file CSV."""
-    #     try:
-    #         with open('khach_hang.csv', 'r', encoding='utf-8') as file:
-    #             reader = csv.DictReader(file)
-    #             return list(reader)
-    #     except FileNotFoundError:
-    #         return []
+        # Làm mới dữ liệu
+        self.luu_du_lieu_vao_file()
+        self.lam_moi_du_lieu()
 
-    def luu_du_lieu(self, danh_sach_khach_hang):
-        """Lưu danh sách khách hàng vào file CSV."""
-        with open('khach_hang.csv', 'w', encoding='utf-8', newline='') as file:
-            if danh_sach_khach_hang:
-                fieldnames = danh_sach_khach_hang[0].keys()
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(danh_sach_khach_hang)
+
 
 # [4]
 # Viết tất cả các hàm chức năng dưới này kèm comment
@@ -729,8 +706,12 @@ Trân trọng,
         lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập 1 hoặc 2")
         if lua_chon == "1":
             self.chinh_sua_khach_hang()
+            tiep_tuc()
+            clear_screen()
         elif lua_chon == "2":
             self.ChucNang_menu()
+            tiep_tuc()
+            clear_screen()
         else:
             in_thong_tin_loi("Lựa chọn không hợp lệ", "Vui lòng thao tác lại")
             tiep_tuc()
@@ -742,19 +723,21 @@ Trân trọng,
         ma_khach_hang = STR_nhap_trong_khung("Nhập mã khách hàng cần chỉnh sửa", "Mã khách hàng")
         khach_hang = self.tim_khach_hang(ma_khach_hang)
         if khach_hang is None:
+            tiep_tuc()
+            clear_screen()
             in_thong_tin_loi("Không tìm thấy khách hàng", "Vui lòng nhập lại mã khách hàng")
             tiep_tuc()
             clear_screen()
             self.chinh_sua_khach_hang()
-        
         while True:
-            in_thong_tin(f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}")
+            clear_screen()
+            in_thong_tin(f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}\n12. Đổi mật khẩu cho khách hàng")
             try:
-                lua_chon = int(STR_nhap_trong_khung("Nhập số để chỉnh sửa thông tin", "Nhập (1-11), 12 để thoát"))
+                lua_chon = int(STR_nhap_trong_khung("Nhập số để chỉnh sửa thông tin", "Nhập (1-12), 13 để về Menu"))
             except ValueError:
                 in_thong_tin_loi("Lỗi", "Vui lòng nhập số hợp lệ")
                 continue
-
+            # Chỉnh sửa thông tin khách hàng theo các số
             if lua_chon == 1:
                 str_hoTen = STR_nhap_trong_khung("Nhập họ tên mới", khach_hang.lay_thong_tin("str_hoTen"))
                 if str_hoTen:
@@ -820,7 +803,7 @@ Trân trọng,
                 khach_hang.chinh_thong_tin("int_soLuongGiaoDich", int_soLuongGiaoDich)
                 in_thong_tin("Thông báo", "Cập nhật số lượng giao dịch thành công")
                 self.luu_du_lieu_vao_file()
-            elif lua_chon == 9:  # Giả sử 10 là tùy chọn chỉnh sửa điểm tích lũy
+            elif lua_chon == 9:  
                 int_diemTichLuy = int(STR_nhap_trong_khung("Nhập điểm tích lũy mới", str(khach_hang.lay_thong_tin("int_diemTichLuy"))))
                 khach_hang.chinh_thong_tin("int_diemTichLuy", int_diemTichLuy)
                 # Tự động phân loại lại hạng khách hàng sau khi cập nhật điểm tích lũy
@@ -835,17 +818,26 @@ Trân trọng,
             elif lua_chon == 11:
                 in_thong_tin_loi("Thông báo", "Không thể chỉnh sửa hạng khách hàng, hạng khách hàng được tự động cập nhật")
             elif lua_chon == 12:
-                in_thong_tin_loi("Thông báo", "Thoát chương trình")
-                return
-
-            lua_chon_tiep = STR_nhap_trong_khung("Bạn có muốn sửa thêm thông tin không? (C: Có / K: Không)", "Nhập C để tiếp tục, K để thoát")
+                mat_khau = STR_nhap_trong_khung("Nhập mật khẩu mới", "")
+                for tk in self.tai_khoan_list:
+                    if tk.lay_thong_tin("str_maNguoiDung")== ma_khach_hang:
+                        tk.chinhSuaThongTin(mat_khau=mat_khau)
+                        in_thong_tin("Thông báo", "Cập nhật mật khẩu thành công")
+                        self.luu_du_lieu_vao_file()
+                        break
+            elif lua_chon == 13:
+                in_thong_tin_loi("Thông báo", "Về Menu chương trình")
+                tiep_tuc()
+                clear_screen()
+                self.ChucNang_menu()
+            lua_chon_tiep = STR_nhap_trong_khung("Bạn có muốn sửa thêm thông tin không? (c: Có / k: Không)", "Nhập c để tiếp tục, k để thoát")
             if lua_chon_tiep.lower() == 'k':
+                in_thong_tin("Thông báo", "Thoát chức năng chỉnh sửa thông tin khách hàng")
+                self.ChucNang_menu()
                 break
-
-        tiep_tuc()
-        clear_screen()
-        self.ChucNang_chinh_sua_khach_hang()
-    
+            tiep_tuc()
+            clear_screen()
+                
     def tim_khach_hang(self, ma_khach_hang):
         for kh in self.khach_hang_list:
             if kh.lay_thong_tin("str_maKhachHang") == ma_khach_hang:
@@ -868,154 +860,118 @@ Trân trọng,
 # [5]
 # Viết tất cả các hàm chức năng dưới này kèm comment
 # In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
-    # def ChucNang_dang_nhap(self):
-    #     """
-    #     Hàm chức năng đăng nhập
-    #     - Yêu cầu nhập tên đăng nhập và mật khẩu
-    #     - Xác thực thông tin người dùng
-    #     """
-    #     in_thong_tin("ĐĂNG NHẬP HỆ THỐNG", "Vui lòng nhập thông tin đăng nhập")
-        
-    #     # Nhập tên đăng nhập
-    #     ten_dang_nhap = STR_nhap_trong_khung("Nhập tên đăng nhập", "Tên đăng nhập")
-        
-    #     # Nhập mật khẩu
-    #     mat_khau = STR_nhap_trong_khung("Nhập mật khẩu", "Mật khẩu")
-        
-    #     # Kiểm tra tên đăng nhập và mật khẩu
-    #     if self.kiem_tra_dang_nhap(ten_dang_nhap, mat_khau):
-    #         in_thong_tin("Thông báo", "Đăng nhập thành công!")
-    #         self.ChucNang_menu()  # Sau khi đăng nhập thành công, chuyển đến menu chính
-    #     else:
-    #         in_thong_tin_loi("Lỗi", "Tên đăng nhập hoặc mật khẩu không chính xác")
-    #         tiep_tuc()
-    #         clear_screen()
-    #         self.ChucNang_dang_nhap()  # Nếu sai, yêu cầu nhập lại thông tin
+    def ChucNang_bao_cao(self):
+        """
+        Hàm chức năng báo cáo
+        - Hiển thị các thống kê báo cáo về khách hàng
+        """
+        in_thong_tin("BÁO CÁO HỆ THỐNG", "1. Báo cáo danh sách khách hàng\n2. Báo cáo số lượng khách hàng mới\n3. Báo cáo phân loại khách hàng\n4. Báo cáo giao dịch khách hàng\n5. Trở về menu")
 
-    # def kiem_tra_dang_nhap(self, ten_dang_nhap, mat_khau):
-    #     """
-    #     Kiểm tra tên đăng nhập và mật khẩu có hợp lệ hay không
-    #     - So sánh với dữ liệu đã lưu trữ (ví dụ: trong một danh sách người dùng hoặc file)
-    #     """
-    #     # Ví dụ kiểm tra danh sách người dùng, cần thay đổi theo cách bạn lưu trữ dữ liệu
-    #     for user in self.danh_sach_nguoi_dung:
-    #         if user.ten_dang_nhap == ten_dang_nhap and user.mat_khau == mat_khau:
-    #             return True
-    #     return False
+        lua_chon = STR_nhap_trong_khung("Nhập lựa chọn báo cáo", "Nhập 1, 2, 3, 4 hoặc 5 để chọn")
 
-
-    # def ChucNang_bao_cao(self):
-    #     """
-    #     Hàm chức năng báo cáo
-    #     - Hiển thị các thống kê báo cáo về khách hàng
-    #     """
-    #     in_thong_tin("BÁO CÁO HỆ THỐNG", "1. Báo cáo danh sách khách hàng\n2. Báo cáo số lượng khách hàng mới\n3. Báo cáo phân loại khách hàng\n4. Báo cáo giao dịch khách hàng\n5. Trở về menu")
-
-    #     lua_chon = STR_nhap_trong_khung("Nhập lựa chọn báo cáo", "Nhập 1, 2, 3, 4 hoặc 5 để chọn")
-
-    #     if lua_chon == "1":
-    #         self.bao_cao_danh_sach_khach_hang()
-    #     elif lua_chon == "2":
-    #         self.bao_cao_so_luong_khach_hang_moi()
-    #     elif lua_chon == "3":
-    #         self.bao_cao_phan_loai_khach_hang()
-    #     elif lua_chon == "4":
-    #         self.bao_cao_giao_dich_khach_hang()
-    #     elif lua_chon == "5":
-    #         self.ChucNang_menu()  # Trở về menu chính
-    #     else:
-    #         in_thong_tin_loi("Lỗi", "Lựa chọn không hợp lệ, vui lòng nhập lại")
-    #         tiep_tuc()
-    #         clear_screen()
-    #         self.ChucNang_bao_cao()
+        if lua_chon == "1":
+            self.bao_cao_danh_sach_khach_hang()
+        elif lua_chon == "2":
+            self.bao_cao_so_luong_khach_hang_moi()
+        elif lua_chon == "3":
+            self.bao_cao_phan_loai_khach_hang()
+        elif lua_chon == "4":
+            self.bao_cao_giao_dich_khach_hang()
+        elif lua_chon == "5":
+            self.ChucNang_menu()  # Trở về menu chính
+        else:
+            in_thong_tin_loi("Lỗi", "Lựa chọn không hợp lệ, vui lòng nhập lại")
+            tiep_tuc()
+            clear_screen()
+            self.ChucNang_bao_cao()
     
-    # def bao_cao_danh_sach_khach_hang(self):
-    #     """
-    #     Báo cáo danh sách tất cả khách hàng
-    #     - Hiển thị thông tin đầy đủ của tất cả khách hàng trong hệ thống
-    #     """
-    #     in_thong_tin("BÁO CÁO DANH SÁCH KHÁCH HÀNG", "Danh sách tất cả khách hàng trong hệ thống:")
+    def bao_cao_danh_sach_khach_hang(self):
+        """
+        Báo cáo danh sách tất cả khách hàng
+        - Hiển thị thông tin đầy đủ của tất cả khách hàng trong hệ thống
+        """
+        in_thong_tin("BÁO CÁO DANH SÁCH KHÁCH HÀNG", "Danh sách tất cả khách hàng trong hệ thống:")
 
-    #     # Duyệt qua từng khách hàng và in thông tin
-    #     for kh in self.khach_hang_list:
-    #         in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày sinh: {kh.lay_thong_tin('date_ngaySinh')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
+        # Duyệt qua từng khách hàng và in thông tin
+        for kh in self.khach_hang_list:
+            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày sinh: {kh.lay_thong_tin('date_ngaySinh')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
         
-    #     tiep_tuc()  # Đợi người dùng nhấn tiếp tục
-    #     clear_screen()  # Dọn dẹp màn hình
-    #     self.ChucNang_bao_cao()  # Quay lại menu báo cáo
+        tiep_tuc()  # Đợi người dùng nhấn tiếp tục
+        clear_screen()  # Dọn dẹp màn hình
+        self.ChucNang_bao_cao()  # Quay lại menu báo cáo
     
-    # def bao_cao_so_luong_khach_hang_moi(self):
-    #     """
-    #     Báo cáo số lượng khách hàng mới
-    #     - Hiển thị số lượng khách hàng mới trong một khoảng thời gian do người dùng nhập vào
-    #     """
-    #     in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", "Nhập khoảng thời gian cần báo cáo (Ví dụ: YYYY-MM-DD - YYYY-MM-DD)")
+    def bao_cao_so_luong_khach_hang_moi(self):
+        """
+        Báo cáo số lượng khách hàng mới
+        - Hiển thị số lượng khách hàng mới trong một khoảng thời gian do người dùng nhập vào
+        """
+        in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", "Nhập khoảng thời gian cần báo cáo (Ví dụ: YYYY-MM-DD - YYYY-MM-DD)")
         
-    #     # Nhập khoảng thời gian
-    #     start_date = STR_nhap_trong_khung("Nhập ngày bắt đầu (YYYY-MM-DD)", "Ngày bắt đầu")
-    #     end_date = STR_nhap_trong_khung("Nhập ngày kết thúc (YYYY-MM-DD)", "Ngày kết thúc")
+        # Nhập khoảng thời gian
+        start_date = STR_nhap_trong_khung("Nhập ngày bắt đầu (YYYY-MM-DD)", "Ngày bắt đầu")
+        end_date = STR_nhap_trong_khung("Nhập ngày kết thúc (YYYY-MM-DD)", "Ngày kết thúc")
         
-    #     # Lọc khách hàng mới trong khoảng thời gian
-    #     khach_hang_moi = [kh for kh in self.khach_hang_list if start_date <= kh.lay_thong_tin('date_ngaySinh') <= end_date]
+        # Lọc khách hàng mới trong khoảng thời gian
+        khach_hang_moi = [kh for kh in self.khach_hang_list if start_date <= kh.lay_thong_tin('date_ngaySinh') <= end_date]
         
-    #     # In thông tin báo cáo
-    #     in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", f"Số lượng khách hàng mới trong khoảng thời gian {start_date} - {end_date}: {len(khach_hang_moi)}")
+        # In thông tin báo cáo
+        in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", f"Số lượng khách hàng mới trong khoảng thời gian {start_date} - {end_date}: {len(khach_hang_moi)}")
         
-    #     # Hiển thị thông tin chi tiết
-    #     for kh in khach_hang_moi:
-    #         in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày đăng ký: {kh.lay_thong_tin('date_ngaySinh')}")
+        # Hiển thị thông tin chi tiết
+        for kh in khach_hang_moi:
+            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày đăng ký: {kh.lay_thong_tin('date_ngaySinh')}")
         
-    #     tiep_tuc()  # Đợi người dùng nhấn tiếp tục
-    #     clear_screen()  # Dọn dẹp màn hình
-    #     self.ChucNang_bao_cao()  # Quay lại menu báo cáo
+        tiep_tuc()  # Đợi người dùng nhấn tiếp tục
+        clear_screen()  # Dọn dẹp màn hình
+        self.ChucNang_bao_cao()  # Quay lại menu báo cáo
     
-    # def bao_cao_phan_loai_khach_hang(self):
-    #     """
-    #     Báo cáo phân loại khách hàng
-    #     - Hiển thị khách hàng theo từng nhóm hạng: VIP, thường xuyên, mới
-    #     """
-    #     # Phân loại khách hàng theo hạng
-    #     khach_hang_vip = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "VIP"]
-    #     khach_hang_thuong_xuyen = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Thường xuyên"]
-    #     khach_hang_moi = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Mới"]
+    def bao_cao_phan_loai_khach_hang(self):
+        """
+        Báo cáo phân loại khách hàng
+        - Hiển thị khách hàng theo từng nhóm hạng: VIP, thường xuyên, mới
+        """
+        # Phân loại khách hàng theo hạng
+        khach_hang_vip = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "VIP"]
+        khach_hang_thuong_xuyen = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Thường xuyên"]
+        khach_hang_moi = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Mới"]
         
-    #     # In thông tin báo cáo
-    #     in_thong_tin("BÁO CÁO PHÂN LOẠI KHÁCH HÀNG", "Danh sách khách hàng theo từng hạng:")
+        # In thông tin báo cáo
+        in_thong_tin("BÁO CÁO PHÂN LOẠI KHÁCH HÀNG", "Danh sách khách hàng theo từng hạng:")
         
-    #     in_thong_tin("", f"VIP ({len(khach_hang_vip)} khách hàng):")
-    #     for kh in khach_hang_vip:
-    #         in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
+        in_thong_tin("", f"VIP ({len(khach_hang_vip)} khách hàng):")
+        for kh in khach_hang_vip:
+            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
         
-    #     in_thong_tin("", f"Thường xuyên ({len(khach_hang_thuong_xuyen)} khách hàng):")
-    #     for kh in khach_hang_thuong_xuyen:
-    #         in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
+        in_thong_tin("", f"Thường xuyên ({len(khach_hang_thuong_xuyen)} khách hàng):")
+        for kh in khach_hang_thuong_xuyen:
+            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
         
-    #     in_thong_tin("", f"Mới ({len(khach_hang_moi)} khách hàng):")
-    #     for kh in khach_hang_moi:
-    #         in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
+        in_thong_tin("", f"Mới ({len(khach_hang_moi)} khách hàng):")
+        for kh in khach_hang_moi:
+            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
         
-    #     tiep_tuc()  # Đợi người dùng nhấn tiếp tục
-    #     clear_screen()  # Dọn dẹp màn hình
-    #     self.ChucNang_bao_cao()  # Quay lại menu báo cáo
+        tiep_tuc()  # Đợi người dùng nhấn tiếp tục
+        clear_screen()  # Dọn dẹp màn hình
+        self.ChucNang_bao_cao()  # Quay lại menu báo cáo
     
-    # def bao_cao_giao_dich_khach_hang(self):
-    #     """
-    #     Báo cáo giao dịch khách hàng
-    #     - Liệt kê giao dịch của khách hàng, bao gồm số tiền và ngày giao dịch
-    #     """
-    #     # In tiêu đề báo cáo
-    #     in_thong_tin("BÁO CÁO GIAO DỊCH KHÁCH HÀNG", "Danh sách giao dịch của khách hàng:")
+    def bao_cao_giao_dich_khach_hang(self):
+        """
+        Báo cáo giao dịch khách hàng
+        - Liệt kê giao dịch của khách hàng, bao gồm số tiền và ngày giao dịch
+        """
+        # In tiêu đề báo cáo
+        in_thong_tin("BÁO CÁO GIAO DỊCH KHÁCH HÀNG", "Danh sách giao dịch của khách hàng:")
         
-    #     # Duyệt qua từng khách hàng và in giao dịch
-    #     for kh in self.khach_hang_list:
-    #         giao_dich_list = kh.lay_thong_tin('list_giaoDich')
+        # Duyệt qua từng khách hàng và in giao dịch
+        for kh in self.khach_hang_list:
+            giao_dich_list = kh.lay_thong_tin('list_giaoDich')
             
-    #         if giao_dich_list:
-    #             for gd in giao_dich_list:
-    #                 in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nGiao dịch: {gd['soTien']} VND vào ngày {gd['ngayGiaoDich']}")
-    #         else:
-    #             in_thong_tin("", f"Khách hàng {kh.lay_thong_tin('str_hoTen')} không có giao dịch nào.")
+            if giao_dich_list:
+                for gd in giao_dich_list:
+                    in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nGiao dịch: {gd['soTien']} VND vào ngày {gd['ngayGiaoDich']}")
+            else:
+                in_thong_tin("", f"Khách hàng {kh.lay_thong_tin('str_hoTen')} không có giao dịch nào.")
         
-    #     tiep_tuc()  # Đợi người dùng nhấn tiếp tục
-    #     clear_screen()  # Dọn dẹp màn hình
-    #     self.ChucNang_bao_cao()  # Quay lại menu báo cáo
+        tiep_tuc()  # Đợi người dùng nhấn tiếp tục
+        clear_screen()  # Dọn dẹp màn hình
+        self.ChucNang_bao_cao()  # Quay lại menu báo cáo
