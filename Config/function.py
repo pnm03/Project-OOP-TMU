@@ -34,8 +34,8 @@ def tiep_tuc():
 
 # Hàm nhập thông tin theo khung
 def STR_nhap_trong_khung(
-     text_title=None,
-     subtitle=None, 
+     text_title="",
+     subtitle="", 
      style_title="bold cyan", 
      border_style="cyan",  
      width=None
