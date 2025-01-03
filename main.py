@@ -20,17 +20,11 @@ from Class.chuon_trinh_quan_ly import *
 def main():
      try:
           quan_ly = QuanLyKhachHang()
-          # print(quan_ly.khach_hang_list[0])
-          # quan_ly.tao_moi_tai_khoan('a.csv')
-          # quan_ly.ChucNang_them_khach_hang()
-          # quan_ly.ChucNang_dang_nhap()
           quan_ly.kiem_tra_dang_nhap()
-          # quan_ly.ChucNang_menu()
      except KeyboardInterrupt:
           in_thong_tin_loi("Lỗi", f"Chương trình gặp lỗi không mong muốn. Đóng chương trình")
      except Exception as e:
           in_thong_tin_loi("Lỗi", f"Chương trình gặp lỗi không mong muốn. Đóng chương trình")
-          print(e)
      finally:
           print()
           in_thong_tin("", "Đóng chương trình. Cảm ơn bạn đã sử dụng")

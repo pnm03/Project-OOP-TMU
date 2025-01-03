@@ -51,8 +51,6 @@ class KhachHang(Nguoi):
         else:
             print(f"Thuộc tính {attr_name} không tồn tại.")
 
-
-
     def tinh_diem_tich_luy(self):
         self.__int_diemTichLuy = int(float(self.__str_soTienDaGiaoDich) * 0.01)
 

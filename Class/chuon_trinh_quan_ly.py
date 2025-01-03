@@ -862,23 +862,23 @@ Trân trọng,
 # In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
     def ChucNang_bao_cao(self):
         """
-        Hàm chức năng báo cáo
-        - Hiển thị các thống kê báo cáo về khách hàng
+        Hàm tổng hợp các báo cáo để người dùng có thể chọn báo cáo.
         """
-        in_thong_tin("BÁO CÁO HỆ THỐNG", "1. Báo cáo danh sách khách hàng\n2. Báo cáo số lượng khách hàng mới\n3. Báo cáo phân loại khách hàng\n4. Báo cáo giao dịch khách hàng\n5. Trở về menu")
-
-        lua_chon = STR_nhap_trong_khung("Nhập lựa chọn báo cáo", "Nhập 1, 2, 3, 4 hoặc 5 để chọn")
-
-        if lua_chon == "1":
+        in_thong_tin("Menu báo cáo", "1. Báo cáo danh sách khách hàng\n2. Báo cáo số lượng khách hàng mới\n3. Báo cáo phân loại khách hàng\n4. Báo cáo giao dịch khách hàng\n5. Quay về menu")
+        
+        choice = STR_nhap_trong_khung("Chọn báo cáo", "Vui lòng chọn báo cáo bạn muốn xem (1-4)")
+        
+        if choice == '1':
             self.bao_cao_danh_sach_khach_hang()
-        elif lua_chon == "2":
+        elif choice == '2':
             self.bao_cao_so_luong_khach_hang_moi()
-        elif lua_chon == "3":
+        elif choice == '3':
             self.bao_cao_phan_loai_khach_hang()
-        elif lua_chon == "4":
+        elif choice == '4':
             self.bao_cao_giao_dich_khach_hang()
-        elif lua_chon == "5":
-            self.ChucNang_menu()  # Trở về menu chính
+        elif choice == '5':
+            clear_screen()
+            self.ChucNang_menu()
         else:
             in_thong_tin_loi("Lỗi", "Lựa chọn không hợp lệ, vui lòng nhập lại")
             tiep_tuc()
@@ -886,92 +886,143 @@ Trân trọng,
             self.ChucNang_bao_cao()
     
     def bao_cao_danh_sach_khach_hang(self):
+        clear_screen()
         """
-        Báo cáo danh sách tất cả khách hàng
-        - Hiển thị thông tin đầy đủ của tất cả khách hàng trong hệ thống
+        Báo cáo danh sách khách hàng.
+        - Hiển thị thông tin chi tiết của tất cả khách hàng từ danh sách khách hàng.
         """
-        in_thong_tin("BÁO CÁO DANH SÁCH KHÁCH HÀNG", "Danh sách tất cả khách hàng trong hệ thống:")
+        in_thong_tin("Danh sách khách hàng", "Dưới đây là danh sách tất cả khách hàng:")
 
-        # Duyệt qua từng khách hàng và in thông tin
-        for kh in self.khach_hang_list:
-            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày sinh: {kh.lay_thong_tin('date_ngaySinh')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
-        
+        for khach_hang in self.khach_hang_list:
+            in_thong_tin("Thông tin khách hàng", f"""
+Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}
+Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}
+Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}
+Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}
+Email: {khach_hang.lay_thong_tin('str_email')}
+Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}
+Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}
+Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')} VND
+Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}
+Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}
+Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')} VND
+Ngày tạo tài khoản: {khach_hang.lay_thong_tin('date_ngayTaoTaiKhoan')}
+            """)
+
         tiep_tuc()  # Đợi người dùng nhấn tiếp tục
         clear_screen()  # Dọn dẹp màn hình
         self.ChucNang_bao_cao()  # Quay lại menu báo cáo
+
     
     def bao_cao_so_luong_khach_hang_moi(self):
         """
-        Báo cáo số lượng khách hàng mới
-        - Hiển thị số lượng khách hàng mới trong một khoảng thời gian do người dùng nhập vào
+        Báo cáo số lượng khách hàng mới trong năm hoặc từ một ngày bắt đầu cụ thể.
+        - Người dùng có thể nhập ngày bắt đầu. Nếu bỏ qua, mặc định là từ năm 2023.
         """
-        in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", "Nhập khoảng thời gian cần báo cáo (Ví dụ: YYYY-MM-DD - YYYY-MM-DD)")
-        
-        # Nhập khoảng thời gian
-        start_date = STR_nhap_trong_khung("Nhập ngày bắt đầu (YYYY-MM-DD)", "Ngày bắt đầu")
-        end_date = STR_nhap_trong_khung("Nhập ngày kết thúc (YYYY-MM-DD)", "Ngày kết thúc")
-        
-        # Lọc khách hàng mới trong khoảng thời gian
-        khach_hang_moi = [kh for kh in self.khach_hang_list if start_date <= kh.lay_thong_tin('date_ngaySinh') <= end_date]
-        
-        # In thông tin báo cáo
-        in_thong_tin("BÁO CÁO SỐ LƯỢNG KHÁCH HÀNG MỚI", f"Số lượng khách hàng mới trong khoảng thời gian {start_date} - {end_date}: {len(khach_hang_moi)}")
-        
-        # Hiển thị thông tin chi tiết
-        for kh in khach_hang_moi:
-            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nNgày đăng ký: {kh.lay_thong_tin('date_ngaySinh')}")
-        
+        ngay_bat_dau = STR_nhap_trong_khung("Nhập ngày bắt đầu", "yyyy-mm-dd, bỏ qua để mặc định là 2024").strip()
+        if not ngay_bat_dau:
+            ngay_bat_dau = "2024-01-01"
+
+        count_new_customers = 0
+        danh_sach_khach_hang = []
+
+        for khach_hang in self.khach_hang_list:
+            # Kiểm tra ngày tạo tài khoản
+            ngay_tao_tai_khoan = khach_hang.lay_thong_tin('date_ngayTaoTaiKhoan')
+            if ngay_tao_tai_khoan >= ngay_bat_dau:
+                count_new_customers += 1
+                danh_sach_khach_hang.append(
+                    f"Mã KH: {khach_hang.lay_thong_tin('str_maKhachHang')} - Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}"
+                )
+
+        in_thong_tin("Số lượng khách hàng mới", f"Số lượng khách hàng mới từ ngày {ngay_bat_dau}: {count_new_customers}")
+
+        if danh_sach_khach_hang:
+            in_thong_tin("Danh sách khách hàng mới", "\n".join(danh_sach_khach_hang))
+
         tiep_tuc()  # Đợi người dùng nhấn tiếp tục
         clear_screen()  # Dọn dẹp màn hình
         self.ChucNang_bao_cao()  # Quay lại menu báo cáo
     
     def bao_cao_phan_loai_khach_hang(self):
         """
-        Báo cáo phân loại khách hàng
-        - Hiển thị khách hàng theo từng nhóm hạng: VIP, thường xuyên, mới
+        Báo cáo phân loại khách hàng theo mức độ giao dịch và điểm tích lũy.
+        - Phân loại khách hàng thành VIP, Thân thiết, và Thường dựa trên tổng số tiền giao dịch và điểm tích lũy.
         """
-        # Phân loại khách hàng theo hạng
-        khach_hang_vip = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "VIP"]
-        khach_hang_thuong_xuyen = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Thường xuyên"]
-        khach_hang_moi = [kh for kh in self.khach_hang_list if kh.lay_thong_tin('str_hangKhachHang') == "Mới"]
-        
-        # In thông tin báo cáo
-        in_thong_tin("BÁO CÁO PHÂN LOẠI KHÁCH HÀNG", "Danh sách khách hàng theo từng hạng:")
-        
-        in_thong_tin("", f"VIP ({len(khach_hang_vip)} khách hàng):")
-        for kh in khach_hang_vip:
-            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
-        
-        in_thong_tin("", f"Thường xuyên ({len(khach_hang_thuong_xuyen)} khách hàng):")
-        for kh in khach_hang_thuong_xuyen:
-            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
-        
-        in_thong_tin("", f"Mới ({len(khach_hang_moi)} khách hàng):")
-        for kh in khach_hang_moi:
-            in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nHạng: {kh.lay_thong_tin('str_hangKhachHang')}")
-        
+        vip_customers = []
+        loyal_customers = []
+        regular_customers = []
+
+        for khach_hang in self.khach_hang_list:
+            # Lấy số tiền giao dịch từ các giao dịch liên quan đến khách hàng
+            tong_so_tien = 0
+            for giao_dich in self.giao_dich_list:
+                if giao_dich.lay_thong_tin('str_maKhachHang') == khach_hang.lay_thong_tin('str_maKhachHang'):
+                    so_tien = int(giao_dich.lay_thong_tin('str_soTienThanhToan').replace(",", ""))
+                    tong_so_tien += so_tien
+
+            # Tính lại điểm tích lũy dựa trên tổng số tiền giao dịch
+            diem_tich_luy = int(tong_so_tien * 0.01)
+            khach_hang.chinh_thong_tin('int_diemTichLuy', diem_tich_luy)
+
+            # Phân loại khách hàng dựa trên điểm tích lũy
+            if diem_tich_luy >= 800000:
+                khach_hang.chinh_thong_tin('str_hangKhachHang', 'VIP')
+                vip_customers.append(f"{khach_hang.lay_thong_tin('str_hoTen')} (Tổng giao dịch: {tong_so_tien} VND, Điểm tích lũy: {diem_tich_luy})")
+            elif diem_tich_luy >= 200000:
+                khach_hang.chinh_thong_tin('str_hangKhachHang', 'Thân thiết')
+                loyal_customers.append(f"{khach_hang.lay_thong_tin('str_hoTen')} (Tổng giao dịch: {tong_so_tien} VND, Điểm tích lũy: {diem_tich_luy})")
+            else:
+                khach_hang.chinh_thong_tin('str_hangKhachHang', 'Thường')
+                regular_customers.append(f"{khach_hang.lay_thong_tin('str_hoTen')} (Tổng giao dịch: {tong_so_tien} VND, Điểm tích lũy: {diem_tich_luy})")
+
+        # In kết quả phân loại khách hàng
+        in_thong_tin("Phân loại khách hàng", \
+                    f"Khách hàng VIP:\n{chr(10).join(vip_customers)}\n\n" \
+                    f"Khách hàng Thân thiết:\n{chr(10).join(loyal_customers)}\n\n" \
+                    f"Khách hàng Thường:\n{chr(10).join(regular_customers)}")
+
         tiep_tuc()  # Đợi người dùng nhấn tiếp tục
         clear_screen()  # Dọn dẹp màn hình
         self.ChucNang_bao_cao()  # Quay lại menu báo cáo
-    
+
     def bao_cao_giao_dich_khach_hang(self):
+        clear_screen()
         """
-        Báo cáo giao dịch khách hàng
-        - Liệt kê giao dịch của khách hàng, bao gồm số tiền và ngày giao dịch
+        Báo cáo giao dịch của khách hàng.
+        - Hiển thị thông tin các giao dịch của khách hàng từ cơ sở dữ liệu.
         """
-        # In tiêu đề báo cáo
-        in_thong_tin("BÁO CÁO GIAO DỊCH KHÁCH HÀNG", "Danh sách giao dịch của khách hàng:")
-        
-        # Duyệt qua từng khách hàng và in giao dịch
-        for kh in self.khach_hang_list:
-            giao_dich_list = kh.lay_thong_tin('list_giaoDich')
-            
-            if giao_dich_list:
-                for gd in giao_dich_list:
-                    in_thong_tin("", f"Khách hàng: {kh.lay_thong_tin('str_hoTen')}\nGiao dịch: {gd['soTien']} VND vào ngày {gd['ngayGiaoDich']}")
-            else:
-                in_thong_tin("", f"Khách hàng {kh.lay_thong_tin('str_hoTen')} không có giao dịch nào.")
-        
+        ma_khach_hang_input = input("Nhập mã khách hàng (hoặc để trống để hiển thị tất cả): ").strip()
+
+        # Check if the input is empty or if the entered customer code matches the transaction's customer code
+        if ma_khach_hang_input == "":
+            # Display all transactions
+            for giao_dich in self.giao_dich_list:
+                in_thong_tin("Giao dịch của khách hàng", f"""
+Mã giao dịch: {giao_dich.lay_thong_tin('str_maGiaoDich')}
+Mã khách hàng: {giao_dich.lay_thong_tin('str_maKhachHang')}
+Số tiền thanh toán: {giao_dich.lay_thong_tin('str_soTienThanhToan')} USD
+Ngày giao dịch: {giao_dich.lay_thong_tin('date_ngayGiaoDich')}
+Tên chuyến đi: {giao_dich.lay_thong_tin('str_tenChuyenDi')}
+Giá chuyến đi: {giao_dich.lay_thong_tin('str_giaChuyenDi')} USD
+Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}%
+Đơn vị cung cấp: {giao_dich.lay_thong_tin('str_donViCungCap')}
+                """)
+        else:
+            # Display transactions only for the specific customer
+            for giao_dich in self.giao_dich_list:
+                if giao_dich.lay_thong_tin('str_maKhachHang') == ma_khach_hang_input:
+                    in_thong_tin("Giao dịch của khách hàng", f"""
+Mã giao dịch: {giao_dich.lay_thong_tin('str_maGiaoDich')}
+Mã khách hàng: {giao_dich.lay_thong_tin('str_maKhachHang')}
+Số tiền thanh toán: {giao_dich.lay_thong_tin('str_soTienThanhToan')} USD
+Ngày giao dịch: {giao_dich.lay_thong_tin('date_ngayGiaoDich')}
+Tên chuyến đi: {giao_dich.lay_thong_tin('str_tenChuyenDi')}
+Giá chuyến đi: {giao_dich.lay_thong_tin('str_giaChuyenDi')} USD
+Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}%
+Đơn vị cung cấp: {giao_dich.lay_thong_tin('str_donViCungCap')}
+                    """)
+
         tiep_tuc()  # Đợi người dùng nhấn tiếp tục
         clear_screen()  # Dọn dẹp màn hình
         self.ChucNang_bao_cao()  # Quay lại menu báo cáo

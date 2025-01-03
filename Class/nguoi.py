@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 class Nguoi:
     def __init__(self, ho_ten, ngay_sinh, dia_chi, so_dien_thoai, email):
         """
@@ -12,12 +13,17 @@ class Nguoi:
     def __str__(self):
         return (f"Nguoi[HoTen={self.__str_hoTen}, NgaySinh={self.__date_ngaySinh}, "
             f"DiaChi={self.__str_diaChi}, SoDienThoai={self.__int_soDienThoai}, Email={self.__str_email}]")
-    def hienThiThongTin(self):
+    @abstractmethod
+    def hien_thi_thong_tin(self):
+        """Phương thức hiển thị thông tin"""
         pass
+
+    @abstractmethod
     def lay_thong_tin(self, attr_name):
+        """Phương thức lấy thông tin theo tên thuộc tính"""
         pass
-        # return getattr(self, f"_{self.__class__.__name__}__{attr_name}", None) 
-        #return getattr(self, f"_{self.__class__.__name__}__{attr_name}", None)
+
+    @abstractmethod
     def chinh_thong_tin(self, attr_name, value):
+        """Phương thức chỉnh sửa thông tin theo tên thuộc tính"""
         pass
-        #setattr(self, f"_{self.__class__.__name__}__{attr_name}", value)
