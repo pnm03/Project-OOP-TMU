@@ -163,18 +163,31 @@ class QuanLyKhachHang:
 
             for tai_khoan in self.tai_khoan_list:
                 if tai_khoan.lay_thong_tin("str_tenTaiKhoan") == ten_tai_khoan:
+                    if not tai_khoan.lay_thong_tin("bool_tinhTrangDangNhap"):
+                        in_thong_tin_loi("Đăng nhập thất bại", "Tài khoản đã bị khóa.")
+                        tiep_tuc()
+                        clear_screen()
+                        return
+                    if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") >= 3:
+                        in_thong_tin_loi("Cảnh báo", "Tài khoản đã bị khóa do nhập sai mật khẩu quá 3 lần.")
+                        tai_khoan.chinhSuaThongTin(tinh_trang_dang_nhap=False)
+                        self.luu_du_lieu_vao_file()  # Cập nhật dữ liệu vào file
+                        tiep_tuc()
+                        clear_screen()
+                        return
                     if tai_khoan.Bool_kiemTraMatKhau(ten_tai_khoan, mat_khau):
-                        clear_screen
                         in_thong_tin("Đăng nhập thành công", "Chúc mừng bạn đã đăng nhập thành công.")
+                        tai_khoan.reset_so_lan_dang_nhap_sai()
+                        self.luu_du_lieu_vao_file()  # Lưu lại thay đổi vào file
                         tiep_tuc()
                         clear_screen()
                         ma_nguoi_dung = tai_khoan.lay_thong_tin("str_maNguoiDung")
 
-                        # Nếu là nhân viên (NV), chuyển đến menu chức năng
+                            # Nếu là nhân viên (NV), chuyển đến menu chức năng
                         if "NV" in ma_nguoi_dung:# kiểm tra mã người dùng
-                            self.ChucNang_menu()  # Chuyển đến menu chức năng cho nhân viên
-                            break                       
-                        # Nếu là khách hàng (KH), hiển thị tùy chọn đổi mật khẩu hoặc đăng xuất
+                                self.ChucNang_menu()  # Chuyển đến menu chức năng cho nhân viên
+                                break                       
+                            # Nếu là khách hàng (KH), hiển thị tùy chọn đổi mật khẩu hoặc đăng xuất
                         elif "KH" in ma_nguoi_dung:
                             while True:
                                 in_thong_tin("Lựa chọn","1. Đổi mật khẩu\n2. Đăng xuất")
@@ -189,27 +202,39 @@ class QuanLyKhachHang:
                                     break
                                 elif lua_chon == "2":
                                     in_thong_tin("Thông báo", "Đăng xuất.")
-                                    break
+                                    sys.exit()
                                 else:
                                     in_thong_tin_loi("Lỗi", "Lựa chọn không hợp lệ. Vui lòng thử lại.")
-                        return None
+                            return 
                     else:
                         in_thong_tin_loi("Đăng nhập thất bại", "Sai mật khẩu. Vui lòng thử lại.")
-                        if tai_khoan.lay_thong_tin("int_soLanDaDangNhap")==2:
-                            in_thong_tin_loi("Cảnh báo", "Bạn chỉ còn 1 lần đăng nhập.")
-                        # Kiểm tra nếu đã vượt quá số lần đăng nhập sai
-                        if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") >= 3:
-                            in_thong_tin_loi("Cảnh báo", "Tài khoản đã bị khóa do nhập sai mật khẩu quá 3 lần.")
-                            tai_khoan.chinhSuaThongTin(tinh_trang_dang_nhap=False)  # Khóa tài khoản
-                        self.luu_du_lieu_vao_file()  # Cập nhật dữ liệu vào file
-                        self.kiem_tra_dang_nhap()
-            else:  
-                in_thong_tin_loi("Đăng nhập thất bại", "Tên tài khoản hoặc mật khẩu không đúng.")
+                        tai_khoan.chinhSuaThongTin(so_lan_da_dang_nhap=tai_khoan.lay_thong_tin("int_soLanDaDangNhap")+1)
+                        self.luu_du_lieu_vao_file()  # Lưu lại thay đổi vào file
+                        chon=STR_nhap_trong_khung("Bạn muốn thử lại không?", "Nhập c(có), k(không)")
+                        if chon == "k":
+                            in_thong_tin("", "Đã hủy đăng nhập")
+                            tiep_tuc()
+                            clear_screen()
+                            sys.exit()
+                        else:
+                            tiep_tuc()
+                            clear_screen()
+                            if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") == 3:
+                                in_thong_tin_loi("Cảnh báo", "Tài khoản đã bị khóa do nhập sai mật khẩu quá 3 lần.")
+                                tai_khoan.chinhSuaThongTin(tinh_trang_dang_nhap=False)
+                                self.luu_du_lieu_vao_file()  # Cập nhật dữ liệu vào file
+                                tiep_tuc()
+                                clear_screen()
+                                sys.exit()
+                           
+                            if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") == 2:
+                                in_thong_tin_loi("Cảnh báo", "Bạn chỉ còn 1 lần đăng nhập.")
+                                self.kiem_tra_dang_nhap()
               
 
     # Menu CN
     def ChucNang_menu(self):
-        in_thong_tin("M E N U", "1. Thêm khách\n2. Tìm kiếm khách hàng\n3. Chỉnh sửa khách hàng\n4. Xóa khách hàng\n5. Xem báo cáo\n6. Thoát chương trình")
+        in_thong_tin("M E N U", "1. Thêm khách\n2. Xóa khách hàng\n3. Tìm kiếm khách hàng\n4. Chỉnh sửa khách hàng\n5. Xem báo cáo\n6. Đăng xuất")
         try:
             lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập từ 1 đến 6")
             if lua_chon == "1":
@@ -217,19 +242,21 @@ class QuanLyKhachHang:
                 self.ChucNang_them_khach_hang()
             elif lua_chon == "2":
                 clear_screen()
-                self.ChucNang_tim_kiem_khach_hang()
+                self.ChucNang_xoa_khach_hang()
             elif lua_chon == "3":
                 clear_screen()
-                self.ChucNang_chinh_sua_khach_hang()
+                self.ChucNang_tim_kiem_khach_hang()
             elif lua_chon == "4":
                 clear_screen()
-                self.ChucNang_xoa_khach_hang()
+                self.ChucNang_chinh_sua_khach_hang()
             elif lua_chon == "5":
                 clear_screen()
                 self.ChucNang_bao_cao()
             elif lua_chon == "6":
+                in_thong_tin("", "Đăng xuất thành công")
                 clear_screen()
                 sys.exit()
+                
             else:
                 clear_screen()
                 in_thong_tin_loi("Lựa chọn không hợp lệ", "Vui lòng thao tác lại")
@@ -530,16 +557,14 @@ Trân trọng,
 # Viết tất cả các hàm chức năng dưới này kèm comment
 # In ra nhớ dùng in_thong_tin và lấy ký tự nhớ dùng STR_nhap_trong_khung
     def ChucNang_tim_kiem_khach_hang(self):
-        in_thong_tin("MENU TÌM KIẾM KHÁCH HÀNG", "1. Tìm theo mã khách hàng\n2.Tìm theo tên khách hàng\n3. Tìm theo tên tài khoản\n4.Trở về Menu")
+        in_thong_tin("MENU TÌM KIẾM KHÁCH HÀNG", "1. Tìm theo mã khách hàng\n2. Tìm theo tên khách hàng\n3. Trở về Menu")
         try:
-            lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập từ 1 đến 4")
+            lua_chon = STR_nhap_trong_khung("Nhập lựa chọn của bạn", "Nhập từ 1 đến 3")
             if lua_chon == "1":
                 self.tim_theo_ma_khach_hang()
             elif lua_chon == "2":
                 self.tim_theo_ten_khach_hang()
             elif lua_chon == "3":
-                self.tim_theo_ten_tai_khoan()
-            elif lua_chon == "4":
                 clear_screen()
                 self.ChucNang_menu()
 
@@ -554,73 +579,53 @@ Trân trọng,
             clear_screen()
             sys.exit()
     #Tìm kiếm khách hàng bằng mã khách hàng
+    def tim_theo_ma_khach_hang(self,):
+       in_thong_tin("", "TÌM KIẾM THEO MÃ KHÁCH HÀNG")
+       ma_khach_hang = STR_nhap_trong_khung ("Nhập mã khách hàng cần tìm:","")
+       khach_hang = self.tim_ma_kh(ma_khach_hang)
+       if True:
+            clear_screen()
+            in_thong_tin(f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}")
+            tiep_tuc()
+            clear_screen()
+            self.ChucNang_tim_kiem_khach_hang()
+       while khach_hang is None:
+            tiep_tuc()
+            clear_screen()
+            in_thong_tin_loi("Không tìm thấy khách hàng", "Vui lòng nhập lại mã khách hàng")
+            tiep_tuc()
+            clear_screen()
+            self.tim_theo_ma_khach_hang()
     def tim_ma_kh(self, ma_khach_hang):
         for kh in self.khach_hang_list:
             if kh.lay_thong_tin("str_maKhachHang") == ma_khach_hang:
                 return kh
-        return None
-    def tim_theo_ma_khach_hang(self):
-       in_thong_tin("", "TÌM KIẾM THEO MÃ KHÁCH HÀNG")
-       ma_khach_hang = STR_nhap_trong_khung ("Nhập mã khách hàng cần tìm: ", "")
-       khach_hang = self.tim_ma_kh(ma_khach_hang)
-       if khach_hang is None:
-            in_thong_tin((f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}"))
-       else:
-           in_thong_tin_loi("Không tìm thấy khách hàng với mã:", ma_khach_hang)
-           try:
-               ma_khach_hang = STR_nhap_trong_khung ("nhập lại mã khách hàng")
-           except ValueError:
-               in_thong_tin_loi("Không tìm thấy khách hàng với mã:", ma_khach_hang)
-               tiep_tuc()
-               clear_screen()
-               self.ChucNang_tim_kiem_khach_hang()
-    #Tìm kiếm khách hàng bằng tên khách hàng
-    def tim_ten_kh(self, ho_ten):
-        """ Tìm kiếm khách hàng theo tên khách."""
-        for khach_hang in self.khach_hang_list:
+        return None 
 
-            print(khach_hang)
-            print("1\n")
-            if khach_hang.lay_thong_tin('str_hoTen') == ho_ten:
-               return khach_hang
-        return None
+    #Tìm kiếm khách hàng bằng tên khách hàng
     def tim_theo_ten_khach_hang(self):
-       in_thong_tin("", "TÌM KIẾM THEO TÊN KHÁCH HÀNG")
-       ho_ten = STR_nhap_trong_khung ("Nhập tên khách hàng cần tìm: ")
-       khach_hang = self.tim_ten_kh(ho_ten)
-       if khach_hang is None:
-           in_thong_tin((f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}"))
-       else:
-           in_thong_tin_loi("Không tìm thấy khách hàng với tên:", ho_ten)
-           try:
-               ho_ten = STR_nhap_trong_khung ("nhập lại tên khách hàng", "")
-           except ValueError:
-               in_thong_tin_loi("Không tìm thấy khách hàng với tên:", ho_ten)
-               tiep_tuc()
-               clear_screen()
-               self.ChucNang_tim_kiem_khach_hang()
-    #Tìm kiếm khách hàng bằng tên tài khoản
-    def tim_ten_tk(self, ten_tai_khoan):
-        """ Tìm kiếm khách hàng theo tên tài khoản."""
-        for khach_hang in self.tai_khoan_list:
-            if khach_hang.lay_thong_tin('str_tenTaiKhoan') == ten_tai_khoan: 
-               return khach_hang
+        in_thong_tin("", "TÌM KIẾM THEO TÊN KHÁCH HÀNG")
+        ho_ten = STR_nhap_trong_khung ("Nhập tên khách hàng cần tìm:","")
+        khach_hang = self.tim_ten_kh(ho_ten)
+        if khach_hang:
+            clear_screen()
+            in_thong_tin(f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}")
+            tiep_tuc()
+            clear_screen()
+            self.ChucNang_tim_kiem_khach_hang()
+        else:
+            while khach_hang is None:
+                tiep_tuc()
+                clear_screen()
+                in_thong_tin_loi("Không tìm thấy khách hàng", "Vui lòng nhập lại tên khách hàng")
+                tiep_tuc()
+                clear_screen()
+                self.ChucNang_tim_kiem_khach_hang()
+    def tim_ten_kh(self, ho_ten):
+        for kh in self.khach_hang_list:
+            if kh.lay_thong_tin("str_hoTen") == ho_ten:
+                return kh
         return None
-    def tim_theo_ten_tai_khoan(self):
-       in_thong_tin("", "TÌM KIẾM THEO TÊN TÀI kHOẢN")
-       ten_tai_khoan = STR_nhap_trong_khung ("Nhập tên tài khoản cần tìm: ")
-       khach_hang = self.tim_ten_tk(ten_tai_khoan)
-       if khach_hang is None:
-           in_thong_tin((f"Thông tin khách hàng có mã: {khach_hang.lay_thong_tin('str_maKhachHang')}", f"1. Họ tên: {khach_hang.lay_thong_tin('str_hoTen')}\n2. Mã khách hàng: {khach_hang.lay_thong_tin('str_maKhachHang')}\n3. Email: {khach_hang.lay_thong_tin('str_email')}\n4. Số điện thoại: {khach_hang.lay_thong_tin('int_soDienThoai')}\n5. Địa chỉ: {khach_hang.lay_thong_tin('str_diaChi')}\n6. Ngày sinh: {khach_hang.lay_thong_tin('date_ngaySinh')}\n7. Số tiền đã giao dịch: {khach_hang.lay_thong_tin('str_soTienDaGiaoDich')}\n8. Số lượng giao dịch: {khach_hang.lay_thong_tin('int_soLuongGiaoDich')}\n9. Điểm tích lũy: {khach_hang.lay_thong_tin('int_diemTichLuy')}\n10. Số tiền tiết kiệm: {khach_hang.lay_thong_tin('str_soTienTietKiem')}\n11. Hạng khách hàng: {khach_hang.lay_thong_tin('str_hangKhachHang')}"))
-       else:
-           in_thong_tin_loi("Không tìm thấy khách hàng với tên tài khoản:", ten_tai_khoan)
-           try:
-               ho_ten = STR_nhap_trong_khung ("nhập lại tên tài khoản khách hàng")
-           except ValueError:
-               in_thong_tin_loi("Không tìm thấy khách hàng với tên:", ho_ten)
-               tiep_tuc()
-               clear_screen()
-               self.ChucNang_tim_kiem_khach_hang()
 
 
 # [3]

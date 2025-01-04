@@ -8,7 +8,6 @@ class TaiKhoan:
         self.__bool_tinhTrangDangNhap = tinh_trang_dang_nhap
         self.__int_soLanDaDangNhap = int(so_lan_da_dang_nhap)
 
-    
 
     def Bool_kiemTraMatKhau(self, ten_tai_khoan, mat_khau):
         """Kiểm tra tài khoản và mật khẩu."""
@@ -18,11 +17,12 @@ class TaiKhoan:
                 self.__int_soLanDaDangNhap = 0  # Reset số lần đăng nhập sai
                 return True
             else:
-                # Nếu mật khẩu sai, tăng số lần đăng nhập sai
-                if "KH" in self.__str_maNguoiDung:
-                    self.__int_soLanDaDangNhap += 1
                 return False
         return False  # Tên tài khoản không khớp
+    
+    def reset_so_lan_dang_nhap_sai(self):
+        self.__int_soLanDaDangNhap = 0
+
 
 
 
