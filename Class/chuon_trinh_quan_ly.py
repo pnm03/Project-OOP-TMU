@@ -437,7 +437,7 @@ Trân trọng,
                 return True
         return False
 
-    def STR_tao_moi_makhachhang(self):
+    def STR_tao_moi_makhachhang(self, a):
         """Tạo mã khách hàng mới, giả sử là mã tự động tăng."""
         return f"KH{random.randint(10000, 99999)}"  # Tạo mã khách hàng ngẫu nhiên
 
@@ -545,7 +545,6 @@ Trân trọng,
         while True:
             mkh = f"KH{ma_khach_hang}"
             if not any(a.lay_thong_tin("str_maKhachHang") == mkh for a in self.khach_hang_list):
-                
                 return mkh
             ma_khach_hang = random.randint(100, 999)
     def STR_tao_mat_khau(self, length=8):
