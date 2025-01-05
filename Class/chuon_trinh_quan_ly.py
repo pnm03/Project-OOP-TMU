@@ -762,7 +762,7 @@ Trân trọng,
                 # Kiểm tra email không trùng
                 if self.kiem_tra_email_trung(str_email):
                     in_thong_tin_loi("Lỗi", "Email đã tồn tại. Vui lòng nhập email khác.")
-                    continue
+                    str_email = STR_nhap_trong_khung("Nhập Email", "Email liên hệ")
                 khach_hang.chinh_thong_tin("str_email", str_email)
                 in_thong_tin("Thông báo", "Cập nhật email thành công")
                 self.luu_du_lieu_vao_file()
@@ -774,7 +774,7 @@ Trân trọng,
                 # Kiểm tra số điện thoại không trùng
                 if self.kiem_tra_so_dien_thoai_trung(int_soDienThoai):
                     in_thong_tin_loi("Lỗi", "Số điện thoại đã tồn tại. Vui lòng nhập số khác.")
-                    continue
+                    int_soDienThoai = STR_nhap_trong_khung("Nhập số điện thoại", "Nhập số")
                 khach_hang.chinh_thong_tin("int_soDienThoai", int_soDienThoai)
                 in_thong_tin("Thông báo", "Cập nhật số điện thoại thành công")
                 self.luu_du_lieu_vao_file()
