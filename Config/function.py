@@ -12,6 +12,22 @@ from rich.text import Text
 
 # Tạo hàm dùng chung thì comment tại main để người khác dùng với
 
+def STR_chuan_hoa_text(text):
+    #Chuẩn hóa tên: chữ cái đầu viết hoa, giữa các từ chỉ có 1 dấu cách.
+    if not isinstance(text, str):
+        raise ValueError("Input must be a string")
+
+    # Xóa các khoảng trắng thừa và ký tự không cần thiết ở đầu và cuối
+    text = text.strip()
+
+    # Thay thế nhiều khoảng trắng liên tiếp thành 1 khoảng trắng
+    text = re.sub(r'\s+', ' ', text)
+
+    # Viết hoa chữ cái đầu của mỗi từ
+    text = text.title()
+
+    return text
+
 # Kiểm tra định dạng số điện thoại
 def BOOL_kiem_tra_so_dien_thoai(so_dien_thoai):
     pattern = r"^0\d{9,11}$"
@@ -165,7 +181,7 @@ def loading_spinner(duration):
         
         while not progress.finished:
             time.sleep(0.1)
-            result = INT_random_number(5, 8)
+            result = INT_random_number(8, 10)
             progress.update(task, advance=result) # Tăng random mỗi lần :v
             
             # Kiểm tra thời gian và dừng khi đã đủ duration

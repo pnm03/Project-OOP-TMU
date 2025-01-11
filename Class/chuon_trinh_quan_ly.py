@@ -75,46 +75,48 @@ class QuanLyKhachHang:
         self.doc_du_lieu_tu_file('Database/giao_dich.csv', 'giao_dich')
         self.doc_du_lieu_tu_file('Database/tai_khoan.csv', 'tai_khoan')
     
-    def luu_du_lieu_vao_file(self):
+    def luu_du_lieu_vao_file(self, a = 0):
         try:
-            # Lưu thông tin Khách hàng (ghi tiếp)
-            with open('Database/khach_hang.csv', mode='w', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                # Kiểm tra nếu file trống thì ghi tiêu đề
-                if file.tell() == 0:
-                    writer.writerow(['Ho_Ten', 'Ngay_Sinh', 'Dia_Chi', 'So_Dien_Thoai', 'Email', 'Ma_Khach_Hang', 
-                                    'Hang_Khach_Hang', 'So_Tien_Da_Giao_Dich', 'So_Luong_Giao_Dich', 'Ngay_Tao_Tai_Khoan', 
-                                    'Diem_Tich_Luy', 'So_Tien_Tiet_Kiem'])
-                for kh in self.khach_hang_list:
-                    writer.writerow([
-                        kh.lay_thong_tin('str_hoTen'), 
-                        kh.lay_thong_tin('date_ngaySinh'), 
-                        kh.lay_thong_tin('str_diaChi'), 
-                        kh.lay_thong_tin('int_soDienThoai'), 
-                        kh.lay_thong_tin('str_email'), 
-                        kh.lay_thong_tin('str_maKhachHang'), 
-                        kh.lay_thong_tin('str_hangKhachHang'), 
-                        kh.lay_thong_tin('str_soTienDaGiaoDich'), 
-                        kh.lay_thong_tin('int_soLuongGiaoDich'), 
-                        kh.lay_thong_tin('date_ngayTaoTaiKhoan'), 
-                        kh.lay_thong_tin('int_diemTichLuy'), 
-                        kh.lay_thong_tin('str_soTienTietKiem')
-                    ])
+            if (a == 0):
+                # Lưu thông tin Khách hàng (ghi tiếp)
+                with open('Database/khach_hang.csv', mode='w', newline='', encoding='utf-8') as file:
+                    writer = csv.writer(file)
+                    # Kiểm tra nếu file trống thì ghi tiêu đề
+                    if file.tell() == 0:
+                        writer.writerow(['Ho_Ten', 'Ngay_Sinh', 'Dia_Chi', 'So_Dien_Thoai', 'Email', 'Ma_Khach_Hang', 
+                                        'Hang_Khach_Hang', 'So_Tien_Da_Giao_Dich', 'So_Luong_Giao_Dich', 'Ngay_Tao_Tai_Khoan', 
+                                        'Diem_Tich_Luy', 'So_Tien_Tiet_Kiem'])
+                    for kh in self.khach_hang_list:
+                        writer.writerow([
+                            kh.lay_thong_tin('str_hoTen'), 
+                            kh.lay_thong_tin('date_ngaySinh'), 
+                            kh.lay_thong_tin('str_diaChi'), 
+                            kh.lay_thong_tin('int_soDienThoai'), 
+                            kh.lay_thong_tin('str_email'), 
+                            kh.lay_thong_tin('str_maKhachHang'), 
+                            kh.lay_thong_tin('str_hangKhachHang'), 
+                            kh.lay_thong_tin('str_soTienDaGiaoDich'), 
+                            kh.lay_thong_tin('int_soLuongGiaoDich'), 
+                            kh.lay_thong_tin('date_ngayTaoTaiKhoan'), 
+                            kh.lay_thong_tin('int_diemTichLuy'), 
+                            kh.lay_thong_tin('str_soTienTietKiem')
+                        ])
 
-            # Lưu thông tin Tài khoản (ghi tiếp)
-            with open('Database/tai_khoan.csv', mode='w', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                # Kiểm tra nếu file trống thì ghi tiêu đề
-                if file.tell() == 0:
-                    writer.writerow(['Ten_Tai_Khoan', 'Mat_Khau', 'Ma_Nguoi_Dung', 'Tinh_Trang_Dang_Nhap', 'So_Lan_Da_Dang_Nhap'])
-                for tk in self.tai_khoan_list:
-                    writer.writerow([
-                        tk.lay_thong_tin('str_tenTaiKhoan'), 
-                        tk.lay_thong_tin('str_matKhau'), 
-                        tk.lay_thong_tin('str_maNguoiDung'), 
-                        tk.lay_thong_tin('bool_tinhTrangDangNhap'), 
-                        tk.lay_thong_tin('int_soLanDaDangNhap')
-                    ])
+                # Lưu thông tin Tài khoản (ghi tiếp)
+                with open('Database/tai_khoan.csv', mode='w', newline='', encoding='utf-8') as file:
+                    writer = csv.writer(file)
+                    # Kiểm tra nếu file trống thì ghi tiêu đề
+                    if file.tell() == 0:
+                        writer.writerow(['Ten_Tai_Khoan', 'Mat_Khau', 'Ma_Nguoi_Dung', 'Tinh_Trang_Dang_Nhap', 'So_Lan_Da_Dang_Nhap'])
+                    for tk in self.tai_khoan_list:
+                        writer.writerow([
+                            tk.lay_thong_tin('str_tenTaiKhoan'), 
+                            tk.lay_thong_tin('str_matKhau'), 
+                            tk.lay_thong_tin('str_maNguoiDung'), 
+                            tk.lay_thong_tin('bool_tinhTrangDangNhap'), 
+                            tk.lay_thong_tin('int_soLanDaDangNhap')
+                        ])
+
             # Lưu thông tin Giao dịch (ghi tiếp)
             with open('Database/giao_dich.csv', mode='w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
@@ -199,6 +201,7 @@ class QuanLyKhachHang:
                                     tai_khoan.chinhSuaThongTin(mat_khau=mat_khau_moi)
                                     in_thong_tin("Thông báo", "Mật khẩu đã được đổi thành công.")
                                     self.luu_du_lieu_vao_file()  # Lưu lại thay đổi vào file
+                                    tiep_tuc()
                                     break
                                 elif lua_chon == "2":
                                     in_thong_tin("Thông báo", "Đăng xuất.")
@@ -230,7 +233,6 @@ class QuanLyKhachHang:
                             if tai_khoan.lay_thong_tin("int_soLanDaDangNhap") == 2:
                                 in_thong_tin_loi("Cảnh báo", "Bạn chỉ còn 1 lần đăng nhập.")
                                 self.kiem_tra_dang_nhap()
-              
 
     # Menu CN
     def ChucNang_menu(self):
@@ -342,6 +344,7 @@ Trân trọng,
             in_thong_tin("", "THÊM KHÁCH HÀNG THỦ CÔNG")
             while True:
                 str_hoTen = STR_nhap_trong_khung("Nhập họ tên", "Được phép có dấu")
+                str_hoTen = STR_chuan_hoa_text(str_hoTen)
                 if (str_hoTen != ""):
                     break
                 in_thong_tin_loi("Lỗi", "Vui lòng nhập đầy đủ họ tên")
@@ -352,6 +355,7 @@ Trân trọng,
                 in_thong_tin_loi("Lỗi", "Ngày sinh không hợp lệ. Vui lòng nhập lại.")
             while True:
                 str_diaChi = STR_nhap_trong_khung("Nhập địa chỉ", "Được phép có dấu")
+                str_diaChi = STR_chuan_hoa_text(str_diaChi)
                 if (str_diaChi != ""):
                     break
                 in_thong_tin_loi("Lỗi", "Vui lòng nhập đầy đủ địa chỉ")
@@ -436,6 +440,13 @@ Trân trọng,
             if kh.lay_thong_tin("str_email") == email or kh.lay_thong_tin("int_soDienThoai") == so_dien_thoai:  # Email là phần tử thứ 4 và số điện thoại là thứ 5
                 return True
         return False
+    def kiem_tra_ma_giao_dich_ton_tai(self, ma_giao_dich):
+        #Kiểm tra xem mã giao dịch đã tồn tại trong danh sách giao dịch chưa.
+        for giao_dich in self.giao_dich_list:
+            if giao_dich.lay_thong_tin("str_maGiaoDich") == ma_giao_dich:
+                return True  # Mã giao dịch đã tồn tại
+        return False  # Mã giao dịch chưa tồn tại
+
 
     def STR_tao_moi_makhachhang(self, a):
         """Tạo mã khách hàng mới, giả sử là mã tự động tăng."""
@@ -462,8 +473,42 @@ Trân trọng,
 
                     # Kiểm tra nếu khách hàng đã tồn tại trong database
                     if self.kiem_tra_khach_hang_ton_tai(str_email, int_soDienThoai):
-                        in_thong_tin_loi("Cảnh báo", f"Khách hàng với email {str_email} hoặc số điện thoại {int_soDienThoai} đã tồn tại.")
-                        continue  # Bỏ qua khách hàng này nếu đã tồn tại
+                        # in_thong_tin_loi("Cảnh báo", f"Khách hàng với email {str_email} hoặc số điện thoại {int_soDienThoai} đã tồn tại.")
+                        # continue  # Bỏ qua khách hàng này nếu đã tồn tại
+                        ma_khach_hang = None
+                        for kh in self.khach_hang_list:
+                            if kh.lay_thong_tin("str_email") == str_email or kh.lay_thong_tin("int_soDienThoai") == int_soDienThoai:
+                                ma_khach_hang = kh.lay_thong_tin("str_maKhachHang")
+                                break
+
+                        if not ma_khach_hang:
+                            in_thong_tin_loi("Cảnh báo", "Không thể tìm thấy mã khách hàng dù khách hàng đã tồn tại.")
+                            continue
+
+                        if not self.kiem_tra_ma_giao_dich_ton_tai(str_maGiaoDich):
+                            # Tạo giao dịch mới và thêm vào danh sách giao dịch
+                            giao_dich = GiaoDich(
+                                str_maGiaoDich, ma_khach_hang, str_soTienThanhToan, arr_hanhKhachDiCung, 
+                                date_ngayGiaoDich, str_hinhThucThanhToan, bool_trangThaiThanhToan, str_tenChuyenDi,
+                                str_giaChuyenDi, str_giamGia, int_doDaiChuyenDi, arr_diaDiemThamQuan, 
+                                date_ngayKhoiHanh, int_soLuongHanhKhach, str_thoiLuongChuyenDi, str_giaPhong, 
+                                str_tenNoiO, str_moTa, str_danhGia, str_tenDiaDiem, str_tenPhuongTien, 
+                                str_soLuongChoNgoi, str_donViCungCap
+                            )
+                            self.giao_dich_list.append(giao_dich)
+                            self.luu_du_lieu_vao_file(1)
+
+                            in_thong_tin(
+                                "Thông báo", 
+                                f"Khách hàng với email {str_email} đã tồn tại\nVì vậy thêm giao dịch mới với mã {str_maGiaoDich} tại người dùng {str_email}"
+                            )
+                        else:
+                            in_thong_tin_loi(
+                                "Cảnh báo", 
+                                f"Khách hàng với email {str_email} đã tồn tại\nMã giao dịch {str_maGiaoDich} cũng đã tồn tại."
+                            )
+                        continue  # Bỏ qua việc thêm khách hàng này
+
                     # Tạo mật khẩu mới
                     mat_khau = self.STR_tao_mat_khau()
                     ma_khach_hang = self.STR_tao_moi_makhachhang()
@@ -691,6 +736,7 @@ Trân trọng,
 
         # Xóa các giao dịch liên quan
         self.giao_dich_list = [gd for gd in self.giao_dich_list if gd.lay_thong_tin("str_maKhachHang") != ma_khach_hang]
+        self.tai_khoan_list = [tk for tk in self.tai_khoan_list if tk.lay_thong_tin("str_maNguoiDung") != ma_khach_hang]
 
         # Thông báo thành công
         in_thong_tin("THÀNH CÔNG", "Khách hàng và các giao dịch liên quan đã được xóa thành công.")
@@ -1009,7 +1055,7 @@ Số tiền thanh toán: {giao_dich.lay_thong_tin('str_soTienThanhToan')} USD
 Ngày giao dịch: {giao_dich.lay_thong_tin('date_ngayGiaoDich')}
 Tên chuyến đi: {giao_dich.lay_thong_tin('str_tenChuyenDi')}
 Giá chuyến đi: {giao_dich.lay_thong_tin('str_giaChuyenDi')} USD
-Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}%
+Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}
 Đơn vị cung cấp: {giao_dich.lay_thong_tin('str_donViCungCap')}
                 """)
         else:
@@ -1023,7 +1069,7 @@ Số tiền thanh toán: {giao_dich.lay_thong_tin('str_soTienThanhToan')} USD
 Ngày giao dịch: {giao_dich.lay_thong_tin('date_ngayGiaoDich')}
 Tên chuyến đi: {giao_dich.lay_thong_tin('str_tenChuyenDi')}
 Giá chuyến đi: {giao_dich.lay_thong_tin('str_giaChuyenDi')} USD
-Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}%
+Giảm giá: {giao_dich.lay_thong_tin('str_giamGia')}
 Đơn vị cung cấp: {giao_dich.lay_thong_tin('str_donViCungCap')}
                     """)
 
